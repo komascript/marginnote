@@ -1,4 +1,4 @@
-% \CheckSum{765}
+% \CheckSum{810}
 % \iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
@@ -32,7 +32,7 @@
 \endgroup
 \ProvidesFile{marginnote.dtx}[\filedate\space\filerevision\space
 %</dtx>
-%<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01}
+%<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01]
 %<package>\ProvidesPackage{marginnote}[%
 %<README>LaTeX package marginnote
 %<README>Copyright (c) Markus Kohmm, 2005-2016
@@ -434,12 +434,15 @@
 % \end{macro}
 %
 % \begin{macro}{\if@mn@pdfmode}
-%   \changes{v1.1}{2006/10/23}{new switch}%
+%   \changes{v1.1}{2006/10/23}{new switch}^^A
 %   \changes{v1.1a}{2008/11/10}{PDF\TeX\ since 1.40 allows \cs{pdfsavepos} in
-%     DVI mode too}%
-%   \changes{v1.1b}{2009/02/16}{if level fixed}%
-%   \changes{v1.1c}{2009/02/26}{\protect\XeTeX has working \cs{pdflastxpos}
-%     but no \cs{pdftexversion}}%
+%     DVI mode too}^^A
+%   \changes{v1.1b}{2009/02/16}{if level fixed}^^A
+%   \changes{v1.1c}{2009/02/26}{\protect\XeTeX has working \cs{pdflastxpos}^^A
+%     but no \cs{pdftexversion}}^^A
+%   \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
+% \begin{macro}{\@mn@mode@prefix}
+%   \changes{v1.2}{2016/06/02}{(new (internal)}^^A
 % We need to know, wether or not PDF\TeX{} and which version of PDF\TeX{} is
 % used. With PDF\TeX{} the horizontal output position may be detected using
 % \cs{pdfsavepos} and \cs{pdflastxpos}. So the relative position of the margin
@@ -448,9 +451,16 @@
 % setting up the switch is delayed.
 %    \begin{macrocode}
 \newif\if@mn@pdfmode\@mn@pdfmodefalse
+\newcommand*{\@mn@mode@prefix}{pdf}
 \AtBeginDocument{%
   \begingroup\expandafter\expandafter\expandafter\endgroup
-  \expandafter\ifx\csname pdflastxpos\endcsname\relax\else % bg or 1
+  \expandafter\ifx\csname pdflastxpos\endcsname\relax
+    \begingroup\expandafter\expandafter\expandafter\endgroup
+    \expandafter\ifx\csname lastxpos\endcsname\relax\else
+      \@mn@pdfmodetrue
+      \renewcommand*{\@mn@mode@prefix}{}%
+    \fi
+  \else % bg or 1
     \begingroup\expandafter\expandafter\expandafter\endgroup
     \expandafter\ifx\csname pdftexversion\endcsname\relax % bg 2
       \begingroup\expandafter\expandafter\expandafter\endgroup
@@ -477,7 +487,8 @@
   \if@mn@verbose
     \if@mn@pdfmode
       \PackageInfo{marginnote}{%
-        \string\pdfoutput\space not 0 and \string\pdflastxpos\space
+        \string\pdfoutput\space not 0 or unimportant and\MessageBreak
+        \string\pdflastxpos\space or \string\lastxpos\space 
         available.\MessageBreak
         Extended position detection mode activated\@gobble
       }%
@@ -492,6 +503,7 @@
   \fi
 }
 %    \end{macrocode}
+% \end{macro}
 % \end{macro}
 %
 % \begin{macro}{\marginnotetextwidth}
@@ -538,6 +550,7 @@
   \g@addto@macro\@outputpage{\stepcounter{mn@abspage}}}
 \newcommand*{\@mn@margintest}{%
 %    \end{macrocode}
+%   \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
 %   Number of the next margin note at this page.
 %    \begin{macrocode}
   \expandafter\ifx\csname @mn@thispage\endcsname\@empty
@@ -560,10 +573,10 @@
   \let\@mn@currpage\relax
   \let\@mn@currxpos\relax
   \if@mn@pdfmode
-    \pdfsavepos
+    \@nameuse{\@mn@mode@prefix savepos}%
     \protected@write\@auxout{\let\themn@abspage\relax}{%
       \string\newmarginnote{note.\@mn@thispage.\@mn@atthispage}{%
-        {\themn@abspage}{\noexpand\number\pdflastxpos sp}}%
+        {\themn@abspage}{\noexpand\number\@nameuse{\@mn@mode@prefix lastxpos}sp}}%
     }%
   \else
     \protected@write\@auxout{\let\themn@abspage\relax}{%
@@ -609,7 +622,15 @@
     \begingroup\expandafter\expandafter\expandafter\endgroup
     \expandafter\ifx\csname pdfhorigin\endcsname\relax\else
       \begingroup\expandafter\expandafter\expandafter\endgroup
-      \expandafter\ifx\csname pdfoutput\endcsname\relax\else
+      \expandafter\ifx\csname pdfoutput\endcsname\relax
+        \begingroup\expandafter\expandafter\expandafter\endgroup
+        \expandafter\ifx\csname outputmode\endcsname\relax\else
+          \ifnum \outputmode=1 %
+            \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin
+              +1in\relax}%
+          \fi
+        \fi
+      \else
         \ifnum \pdfoutput=1 %
           \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin 
             +1in\relax}%
