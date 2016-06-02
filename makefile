@@ -24,7 +24,7 @@ $(TDSDOC): $(SOURCE)
 	pdflatex $<
 
 dist: $(TDSSOURCE) $(TDSDOC) $(TDSLATEX)
-	ctanify -p marginnote $(TDSSOURCE) $(TDSDOC) $(TDSLATEX)
+	ctanify -p marginnote $(TDSSOURCE) $(TDSDOC) $(TDSLATEX) --tdsonly $(TDSLATEX)
 
 clean:
 	@rm -f *~ pdftest.* luatest.* \
