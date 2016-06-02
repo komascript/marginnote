@@ -4,7 +4,7 @@
 # $Id$
 # --------------------------------------------------------------------------
 
-AUXSUFFIXES = aux dvi glo gls idx ind log synctex.gz toc
+AUXSUFFIXES = aux dvi glo gls ilg idx ind log synctex.gz toc
 
 SOURCE     = marginnote.dtx
 TDSSOURCE  = $(SOURCE) README.txt
@@ -27,6 +27,23 @@ dist: $(TDSSOURCE) $(TDSDOC) $(TDSLATEX)
 	ctanify -p marginnote $(TDSSOURCE) $(TDSDOC) $(TDSLATEX)
 
 clean:
-	@rm -f *~ \
+	@rm -f *~ pdftest.* luatest.* \
 	       $(foreach auxsuffix,$(AUXSUFFIXES),$(addsuffix .$(auxsuffix),$(basename $(SOURCE))) ) \
 	       $(UNPACKED) $(TDSDOC)
+
+allclean: clean
+	@rm -rf auto marginnote.tar.gz
+
+test: pdftest.pdf luatest.pdf
+
+pdftest.pdf: test-marginnote.tex $(TDSLATEX)
+	@cp -f test-marginnote.tex pdftest.tex
+	pdflatex pdftest.tex
+	pdflatex pdftest.tex
+	@rm -f pdftest.aux pdftest.log pdftest.tex
+
+luatest.pdf: test-marginnote.tex $(TDSLATEX)
+	@cp -f test-marginnote.tex luatest.tex
+	lualatex luatest.tex
+	lualatex luatest.tex
+	@rm -f luatest.aux luatest.log luatest.tex
