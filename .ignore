@@ -1,0 +1,14 @@
+*~
+*.aux
+*.dvi
+*.glo
+*.gls
+*.idx
+*.ind
+*.log
+*.pdf
+*.sty
+*.synctex.gz
+*.toc
+*.txt
+auto
