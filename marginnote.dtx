@@ -1,57 +1,126 @@
 % \CheckSum{765}
 % \iffalse meta-comment
-%
+% ======================================================================
 % marginnote.dtx
+% Copyright (c) Markus Kohm, 2005-2016
 %
-%% Copyright (c) Markus Kohm  2005-2012
-%%
-%% This work may be distributed and/or modified under the
-%% conditions of the LaTeX Project Public License, either version 1.3
-%% of this license or (at your option) any later version.
-%% The latest version of this license is in
-%% http://www.latex-project.org/lppl.txt
-%% and version 1.3 or later is part of all distributions of LaTeX
-%% version 2003/12/01 or later.
-%% 
-%% This work has the LPPL maintenance status "maintained".
-%%
-%% The author of the initial version of these work was 
-%% Markus Kohm <komascript@gmx.info>
-%% 
-%% This work consists of the files marginnote.dtx, marginnote.ins,
-%% and REAMDE.
-%%
-%% Important Recommendation:
-%%   The LPPL requires that distributions of the Work contain all the files of
-%%   the Work (see ``Important Recommendations'' at lppl.txt).
-%%
+% This file is part of the work marginnote.
 %
-%<*driver>
-\ProvidesFile{marginnote.dtx}[%
-%</driver>
+% This work may be distributed and/or modified under the conditions of
+% the LaTeX Project Public License, version 1.3c of the license.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+% and version 1.3c or later is part of all distributions of LaTeX
+% version 2005/12/01 or later and of this work.
+%
+% This work has the LPPL maintenance status "maintained".
+%
+% The Current Maintainer and author of this work is Markus Kohm.
+%
+% This work consists of the files marginnote.dtx and the
+% derived files README.txt and marginnote.sty.
+% ======================================================================
+%
+%<package>%%% From File: $Id$
+%<*dtx>
+\ifx\ProvidesFile\undefined\def\ProvidesFile#1[#2]{}\fi
+\begingroup
+  \def\filedate$#1: #2-#3-#4 #5${\gdef\filedate{#2/#3/#4}}
+  \filedate$Date$
+  \def\filerevision$#1: #2 ${\gdef\filerevision{#2}}
+  \filerevision$Revision$
+\endgroup
+\ProvidesFile{marginnote.dtx}[\filedate\space\filerevision\space
+%</dtx>
+%<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01}
 %<package>\ProvidesPackage{marginnote}[%
-%<*driver|package>
-  2012/03/29 v1.1i non floating margin notes for LaTeX]
-%</driver|package>
-%<*driver>
+%<README>LaTeX package marginnote
+%<README>Copyright (c) Markus Kohmm, 2005-2016
+%<README>-------------------------------------------------------------------
+%<README>Version:
+% \fi^^A meta-comment
+% \newcommand*{\packagedateandversion}{%
+% \iffalse meta-comment
+%<*package|README>
+% \fi^^A meta-comment
+  2016/06/02 v1.2
+% \iffalse meta-comment
+%</package|README>
+% \fi^^A meta-comment
+% }
+% \iffalse meta-comment
+%<README>Licence:
+%<README>  This work may be distributed and/or modified under the conditions 
+%<REAMDE>  of the LaTeX Project Public License, version 1.3c of the license.
+%<README>  The latest version of this license is in
+%<README>    http://www.latex-project.org/lppl.txt
+%<README>  and version 1.3c or later is part of all distributions of LaTeX
+%<README>  version 2005/12/01 or later and of this work.
+%<README>Abstract:
+%<README>  This package provides the command \marginnote that may be used
+%<README>  instead of \marginpar at almost every place, where \marginpar
+%<README>  cannot be used, e.g. inside floats, footnotes, frames made with
+%<README>  framed package.  See marginnote.pdf for more information.
+%<README>-------------------------------------------------------------------
+%<*dtx|package>
+  non floating margin notes for LaTeX]
+%</dtx|package>
+%<*dtx>
+\ifx\documentclass\undefined
+  \input docstrip.tex
+
+  \keepsilent
+  \askforoverwritefalse
+  \usedir{tex/latex/marginnote}
+
+  \generate{%
+    \file{marginnote.sty}{\from{marginnote.dtx}{package}}%
+    \nopreamble\nopostamble
+    \file{README.txt}{\from{marginnote.dtx}{README}}%
+  }
+
+  \ifToplevel{%
+    \Msg{*********************************************************************}
+    \Msg{*}
+    \Msg{* marginnote}
+    \Msg{* ==========}
+    \Msg{*}
+    \Msg{* To finish the installation run}
+    \Msg{* \space\space pdflatex marginnote.dtx}
+    \Msg{* After this copy}
+    \Msg{* \space\space marginnote.sty to .../tex/latex/marginnote/}
+    \Msg{* \space\space marginnote.pdf to .../doc/latex/marginnote/}
+    \Msg{* \space\space marginnote.dtx to .../source/latex/marginnote/}
+    \Msg{* \space\space README
+      \space\space\space\space\space\space\space\space to 
+      .../source/latex/marginnote/}
+    \Msg{* where .../ is your local TDS tree}
+    \Msg{*}
+    \Msg{*********************************************************************}
+  }
+\else
+  \let\endbatchfile\relax
+\fi
+\endbatchfile
 \documentclass{ltxdoc}
 \usepackage{graphicx}% needed for \reflectbox
 \providecommand*{\XeTeX}{%
   X\kern-.1em\lower.5ex\hbox{\reflectbox{E}}\kern-.15em\TeX}
-\begin{document}
+\CodelineIndex
 \RecordChanges
+\begin{document}
 \DocInput{marginnote.dtx}
 \end{document}
-%</driver>
+%</dtx>
 %\fi
 %
 % \GetFileInfo{marginnote.dtx}
 %
 % \title{Non-Floating Margin Notes with \textsf{marginnote}
-%   Package\thanks{This file has version number \fileversion, last revised
+%   Package\thanks{This file has revision number \fileversion, last revised
 %     \filedate.}}
 % \author{Markus Kohm\thanks{Email: \texttt{komascript@gmx.info}}}
-% \date{\filedate}
+% \date{\packagedateandversion}
 % \maketitle
 %
 % \begin{abstract}
