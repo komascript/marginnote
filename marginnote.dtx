@@ -1,4 +1,4 @@
-% \CheckSum{810}
+% \CheckSum{815}
 % \iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
@@ -43,7 +43,7 @@
 % \iffalse meta-comment
 %<*package|README>
 % \fi^^A meta-comment
-  2016/06/02 v1.2
+  2016/10/21 v1.2a
 % \iffalse meta-comment
 %</package|README>
 % \fi^^A meta-comment
@@ -527,7 +527,7 @@
 %   \changes{v1.1}{2006/10/23}{new (internal)}
 % \begin{macro}{\@mn@currxpos}
 %   \changes{v1.1}{2006/10/23}{new (internal)}
-% \begin{macro}{mn@abspage}
+% \begin{macro}{\mn@abspage}
 %   Macro \cs{@mn@margintest} does the complete test, which margin to use. The
 %   result may be found at \cs{if@tempswa}. To avoid changes on the last page
 %   if there is a new note on the first page, try to count the notes by
@@ -612,28 +612,33 @@
       mn@note.\@mn@thispage.\@mn@atthispage\endcsname}%
     \edef\@mn@currxpos{\expandafter\@secondoftwo\@mn@currpage}%
 %    \end{macrocode}
-% \changes{v1.1d}{2009/05/06}{take care of \cs{hoffset}}%
+% \changes{v1.1d}{2009/05/06}{take care of \cs{hoffset}}^^A
 % Ulrike Fischer suggested a simple change to take care of \cs{hoffset},
 % e.g., using package \textsf{crop}.
-% \changes{v1.1d}{2009/05/06}{take care of \cs{pdfhorigin}}%
+% \changes{v1.1d}{2009/05/06}{take care of \cs{pdfhorigin}}^^A
 % We use this occasion to take care of \cs{pdfhorigin}, too.
+% \changes{v1.2a}{2016/10/21}{redefine \cs{@mn@currxpos} only if not empty}^^A
+% If \cs{@mn@currxpos} is not empty here, it should be corrected by
+% \cs{hoffset} and maybe by \cs{pdfhorigin}.
 %    \begin{macrocode}
-    \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\hoffset\relax}%
-    \begingroup\expandafter\expandafter\expandafter\endgroup
-    \expandafter\ifx\csname pdfhorigin\endcsname\relax\else
+    \ifx\@mn@currxpos\@empty\else
+      \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\hoffset\relax}%
       \begingroup\expandafter\expandafter\expandafter\endgroup
-      \expandafter\ifx\csname pdfoutput\endcsname\relax
+      \expandafter\ifx\csname pdfhorigin\endcsname\relax\else
         \begingroup\expandafter\expandafter\expandafter\endgroup
-        \expandafter\ifx\csname outputmode\endcsname\relax\else
-          \ifnum \outputmode=1 %
-            \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin
+        \expandafter\ifx\csname pdfoutput\endcsname\relax
+          \begingroup\expandafter\expandafter\expandafter\endgroup
+          \expandafter\ifx\csname outputmode\endcsname\relax\else
+            \ifnum \outputmode=1 %
+              \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin
+                +1in\relax}%
+            \fi
+          \fi
+        \else
+          \ifnum \pdfoutput=1 %
+            \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin 
               +1in\relax}%
           \fi
-        \fi
-      \else
-        \ifnum \pdfoutput=1 %
-          \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin 
-            +1in\relax}%
         \fi
       \fi
     \fi
@@ -739,9 +744,9 @@
         \if@tempswa
           \rlap{%
 %    \end{macrocode}
-% If \cs{@mn@currpos} is neither \cs{relax} nor empty it is the real current
-% $x$ position of the last PDF\LaTeX{} run and may be used to calculate the
-% real horizontal offset.
+% If \cs{@mn@currxpos} is neither \cs{relax} nor empty it is the real 
+% current $x$ position of the last PDF\LaTeX{} run and may be used to
+% calculate the real horizontal offset.
 %    \begin{macrocode}
             \ifx\@mn@currxpos\relax
               \kern\marginnoterightadjust
