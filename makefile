@@ -1,5 +1,5 @@
 # Makefile for marginnote
-# Copyright (c) Markus Kohm, 2005-2016
+# Copyright (c) Markus Kohm, 2005-2017
 # --------------------------------------------------------------------------
 # $Id$
 # --------------------------------------------------------------------------
@@ -27,7 +27,7 @@ dist: $(TDSSOURCE) $(TDSDOC) $(TDSLATEX)
 	ctanify -p marginnote $(TDSSOURCE) $(TDSDOC) $(TDSLATEX) --tdsonly $(TDSLATEX)
 
 clean:
-	@rm -f *~ pdftest.* luatest.* \
+	@rm -f *~ pdftest.* luatest.* biditest.* \
 	       $(foreach auxsuffix,$(AUXSUFFIXES),$(addsuffix .$(auxsuffix),$(basename $(SOURCE))) ) \
 	       $(UNPACKED) $(TDSDOC)
 
