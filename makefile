@@ -34,7 +34,7 @@ clean:
 allclean: clean
 	@rm -rf auto marginnote.tar.gz
 
-test: pdftest.pdf luatest.pdf
+test: pdftest.pdf luatest.pdf biditest.pdf
 
 pdftest.pdf: test-marginnote.tex $(TDSLATEX)
 	@cp -f test-marginnote.tex pdftest.tex
@@ -47,3 +47,9 @@ luatest.pdf: test-marginnote.tex $(TDSLATEX)
 	lualatex luatest.tex
 	lualatex luatest.tex
 	@rm -f luatest.aux luatest.log luatest.tex
+
+biditest.pdf: testbidi-marginnote.tex $(TDSLATEX)
+	@cp -f testbidi-marginnote.tex biditest.tex
+	xelatex biditest.tex
+	xelatex biditest.tex
+	@rm -f biditest.aux biditest.log biditest.tex

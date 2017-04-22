@@ -1,4 +1,4 @@
-% \CheckSum{849}
+% \CheckSum{859}
 % \iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
@@ -632,6 +632,15 @@
             \ifnum \outputmode=1 %
               \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin
                 +1in\relax}%
+            \fi
+          \fi
+        \else
+          \ifnum \pdfoutput=1 %
+            \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin 
+              +1in\relax}%
+          \fi
+        \fi
+      \fi
 %    \end{macrocode}
 % \changes{v1.2b}{2017/04/22}{\textsf{bidi} code added}^^A
 % If you are using package \textsf{bidi} and RTL mode is active, the position
@@ -639,20 +648,16 @@
 % from \cs{pdfpagewidth} (or \cs{pagewidth} using Lua\TeX, but this cannot be,
 % because \textsf{bidi} is not Lua\TeX-compatible).
 %    \begin{macrocode}
-              \@mn@if@RTL{%
-                \edef\@mn@currxpos{\the\dimexpr\pagewidth-\@mn@currxpos\relax}%
-              }{}%
-            \fi
-          \fi
-        \else
-          \ifnum \pdfoutput=1 %
-            \edef\@mn@currxpos{\the\dimexpr \@mn@currxpos -\pdfhorigin 
-              +1in\relax}%
-            \@mn@if@RTL{%
-              \edef\@mn@currxpos{\the\dimexpr\pdfpagewidth-\@mn@currxpos\relax}%
-            }{}%
-          \fi
-        \fi
+      \begingroup\expandafter\expandafter\expandafter\endgroup
+      \expandafter\ifx\csname \@mn@mode@prefix pagewidth\endcsname\relax\else
+        \@mn@if@RTL{%
+          \PackageInfo{marginnote}{Margin note
+            \@mn@thispage.\@mn@atthispage\space in RTL mode}%
+          \edef\@mn@currxpos{%
+            \the\dimexpr\@nameuse{\@mn@mode@prefix pagewidth}
+                        -\@mn@currxpos\relax
+          }%
+        }{}%
       \fi
     \fi
     \edef\@mn@currpage{\expandafter\@firstoftwo\@mn@currpage}%
