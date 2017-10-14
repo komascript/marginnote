@@ -136,6 +136,7 @@
 % \tableofcontents
 %
 % \changes{v1.0b}{2006/14/03}{spelling fixes}
+% \changes{v1.2b}{2017/10/14}{spelling fixes (by Thomas Reuben)}
 %
 % \section{How to Use \textsf{marginnote} Package}
 %
@@ -510,7 +511,7 @@
 %   \changes{v1.1}{2006/10/23}{new macro}
 % Some environments change \cs{textwidth}. But at PDF mode we need to know the
 % real text width to find the right margin. So we use our own text width
-% macro. Sometimes it may be usefull if the user can set it up. Because of
+% macro. Sometimes it may be useful if the user can set it up. Because of
 % this it is a user command.
 %    \begin{macrocode}
 \newcommand*{\marginnotetextwidth}{}
@@ -531,7 +532,7 @@
 %   Macro \cs{@mn@margintest} does the complete test, which margin to use. The
 %   result may be found at \cs{if@tempswa}. To avoid changes on the last page
 %   if there is a new note on the first page, try to count the notes by
-%   page. We know that this can not be successfull, but never the less it may
+%   page. We know that this can not be successful, but never the less it may
 %   be a good try. \cs{@mn@thispage} saves the page number of the last usage
 %   of \cs{@mn@margintest}. \cs{@mn@atthispage} saves the number of margin
 %   note at this page. But we need to know the absolut page number to do
@@ -761,9 +762,9 @@
     \fi
     \@tempa{%
 %    \end{macrocode}
-% Everything will be put upwards using a vbox with zero height and depth and
-% \cs{vss}. At this box the margin test will be done. If cs{reversemargin}
-% was used, the logic switchs. Then the note will be places to the margin.
+% Everything will be put upwards using a \cs{vbox} with zero height and depth
+% and \cs{vss}. At this box the margin test will be done. If cs{reversemargin}
+% was used, the logic reverses. Then the note will be places to the margin.
 %    \begin{macrocode}
       \vbox to\z@{%
         \vss
