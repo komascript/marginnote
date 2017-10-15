@@ -252,7 +252,7 @@
 %
 % At double side layout (e.g. using class option \texttt{twoside})
 % \cs{marginnote} needs to know the number of the current page to decide
-% wether the page is odd or even and so wether to use left or right
+% whether the page is odd or even and so whether to use left or right
 % margin. \LaTeX{} uses an asynchronous output. Because of this counter
 % \texttt{page} should not be used to get the number of the current page
 % unless you are at page head or foot. To solve the problem
@@ -444,7 +444,7 @@
 %   \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
 % \begin{macro}{\@mn@mode@prefix}
 %   \changes{v1.2}{2016/06/02}{(new (internal)}^^A
-% We need to know, wether or not PDF\TeX{} and which version of PDF\TeX{} is
+% We need to know, whether or not PDF\TeX{} and which version of PDF\TeX{} is
 % used. With PDF\TeX{} the horizontal output position may be detected using
 % \cs{pdfsavepos} and \cs{pdflastxpos}. So the relative position of the margin
 % may be calculated. Without PDF\TeX{} only manual adjustment is
@@ -763,8 +763,9 @@
     \@tempa{%
 %    \end{macrocode}
 % Everything will be put upwards using a \cs{vbox} with zero height and depth
-% and \cs{vss}. At this box the margin test will be done. If cs{reversemargin}
-% was used, the logic reverses. Then the note will be places to the margin.
+% and \cs{vss}. At this box the margin test will be done. If
+% \cs{reversemarginpar} was used, the logic reverses. Then the note will be
+% places to the margin.
 %    \begin{macrocode}
       \vbox to\z@{%
         \vss
