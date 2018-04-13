@@ -1,8 +1,8 @@
-% \CheckSum{859}
+% \CheckSum{717}
 % \iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
-% Copyright (c) Markus Kohm, 2005-2017
+% Copyright (c) Markus Kohm, 2005-2018
 %
 % This file is part of the work marginnote.
 %
@@ -35,7 +35,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01]
 %<package>\ProvidesPackage{marginnote}[%
 %<README>LaTeX package marginnote
-%<README>Copyright (c) Markus Kohm, 2005-2017
+%<README>Copyright (c) Markus Kohm, 2005-2018
 %<README>-------------------------------------------------------------------
 %<README>Version:
 % \fi^^A meta-comment
@@ -43,7 +43,7 @@
 % \iffalse meta-comment
 %<*package|README>
 % \fi^^A meta-comment
-  2017/04/22 v1.2b
+  2018/04/13 v1.3
 % \iffalse meta-comment
 %</package|README>
 % \fi^^A meta-comment
@@ -173,33 +173,6 @@
 % of the margin note. Use a negative dimension to move it up or a positive
 % dimension to move it down.
 %
-% \DescribeMacro{\marginnoteleftadjust}
-% \DescribeMacro{\marginnoterightadjust}
-% At some environments, e.g. \texttt{framed} from the \textsf{framed} package
-% the horizontal placement of the margin notes are not correct. In this case
-% you may redefine \cs{marginnoteleftadjust} and \cs{marginnoterightadjust} to
-% fix this. Note that these are macros not lengths! So you have to use
-% \cs{renewcommand}, \cs{def} or \cs{let} to change them. You may e.g. use
-% \begin{verbatim}
-% \begingroup
-%   \makeatletter
-%   \g@addto@macro\framed{%
-%     \let\marginnoteleftadjust\FrameSep
-%     \let\marginnoterightadjust\FrameSep
-%   }
-% \endgroup
-% \end{verbatim}\vskip-\baselineskip
-% at your preamble after loading package \textsf{framed} to fix the problem
-% using \texttt{framed} environment.
-%
-% NOTE: \cs{marginnoteleftadjust} and \cs{marginnoterightadjust} will be used
-% only, if the correct horizontal position cannot be determined using
-% PDF\TeX{} features (\cs{pdfsavepos} and \cs{pdflastxpos}). So if you are
-% using PDF\LaTeX{} with PDF output or PDF\LaTeX{} with PDF\TeX-version since
-% 1.40 or \XeTeX{} you will not need to use the example code above, but you
-% will need at least two \LaTeX{} runs to get the correct horizontal positions
-% of the margin notes.
-%
 % \DescribeMacro{\marginnotetextwidth}
 % Package \textsl{marginnote} needs to know the real width of the type area to
 % find the right margin. While some environments (e.g. those of package
@@ -248,7 +221,7 @@
 % e.g. package \textsf{color} to use \cs{color}.
 %
 %
-% \section{Known Problems Using \textsf{marginnote}}
+% \section{Known Issues Using \textsf{marginnote}}
 %
 % At double side layout (e.g. using class option \texttt{twoside})
 % \cs{marginnote} needs to know the number of the current page to decide
@@ -299,7 +272,6 @@
 %
 % You should not use \cs{marginnote} at the optional argument of \cs{item}.
 %
-%
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
@@ -308,34 +280,76 @@
 %<*package>
 % \fi
 %
-% First test $\varepsilon$-\TeX.
+% \changes{v1.3}{2018/04/13}{$\varepsilon$-\TeX{} removed}^^A
+%
+% \changes{v1.3}{2018/04/13}{early \cs{pdfsavepos}/\cs{savepos} test}^^A
+% \begin{macro}{\mn@savepos}
+% \changes{v1.3}{2018/04/13}{new internal command}
+% \begin{macro}{\mn@lastxpos}
+% \changes{v1.3}{2018/04/13}{new internal command}
+% Since version 1.3 \texttt{marginnote} does need either \cs{pdfsavepos} and
+% \cs{pdflastxpos} or \cs{savepos} and \cs{lastxpos} and does not longer
+% support engines without these primitives. All these engines also provide
+% $\varepsilon$-\TeX{} extensions. So we do not longer need an explicite
+% $\varepsilon$-\TeX{} test.
 %    \begin{macrocode}
 \begingroup
-  \def\@tempb{}%
-  \def\@tempa{%
-    \PackageError{marginnote}{seems you are not running e-TeX\@tempb}{%
-      Since 2004 the LaTeX team recommends to use e-TeX.\MessageBreak
-      marginnote since version 1.1d uses e-TeX features.\MessageBreak
-      At actual systems `latex' should already use e-TeX.\MessageBreak
-      At deprecated systems it may be called `elatex'.\MessageBreak
-      Use either unsupported marginnote up to version 1.1c or\MessageBreak
-      ask you administrator for LaTeX using e-TeX\@tempb.\MessageBreak
-      Not using e-TeX\@tempb\space is a fatal error!\MessageBreak
-      Processing cannot be continued!}%
-    \endgroup
-    \batchmode \errmessage{}\csname @@end\endcsname\end\relax
-    \csname endinput\endcsname
+  \@ifundefined{pdfsavepos}{%
+    \@ifundefined{savepos}{%
+      \PackageError{marginnote}{%
+        neither \string\pdfsavepos\space nor \string\savepos\space
+        available
+      }{%
+        Package `marginnote' depends on extended features of
+        PDFLaTeX,\MessageBreak
+        LuaLaTeX or XeLaTeX. It does not work without those
+        feature.\MessageBreak
+        If you'd continue the package will not provide any feature.
+      }%
+      \aftergroup\endinput
+    }{%
+      \@ifundefined{lastxpos}{%
+        \PackageError{marginnote}{%
+          \string\savepos\space but not \string\lastxpos\space
+          available
+        }{%
+          Package `marginnote' depends on extended features of
+          PDFLaTeX,\MessageBreak
+          LuaLaTeX or XeLaTeX. It does not work without those
+          feature.\MessageBreak
+          If you'd continue the package will not provide any feature.
+        }%
+        \aftergroup\endinput
+      }{%
+        \global\let\mn@savepos\savepos
+        \global\let\mn@lastxpos\lastxpos
+        \global\let\mn@pagewidth\pagewidth
+      }%
+    }%
+  }{%
+    \@ifundefined{pdflastxpos}{%
+      \PackageError{marginnote}{%
+        \string\pdfsavepos\space but not \string\pdflastxpos\space
+        available
+      }{%
+        Package `marginnote' depends on extended features of
+        PDFLaTeX,\MessageBreak
+        LuaLaTeX or XeLaTeX. It does not work without those
+        feature.\MessageBreak
+        If you'd continue the package will not provide any feature.
+      }%
+      \aftergroup\endinput
+    }{%
+      \global\let\mn@savepos\pdfsavepos
+      \global\let\mn@lastxpos\pdflastxpos
+      \global\let\mn@pagewidth\pdfpagewidth
+    }%
   }%
-  \expandafter\ifx\csname eTeXversion\endcsname\relax\else
-    \ifnum\eTeXversion <2
-      \def\@tempb{ V 2}%
-    \else
-      \let\@tempa\endgroup
-    \fi
-  \fi
-\@tempa
+\endgroup
 %    \end{macrocode}
-%
+% \end{macro}
+% \end{macro}
+% 
 % Next declare and process the options.
 %
 % \begin{macro}{\if@mn@verbose}
@@ -435,80 +449,22 @@
 % \end{macro}
 %
 % \begin{macro}{\if@mn@pdfmode}
-%   \changes{v1.1}{2006/10/23}{new switch}^^A
-%   \changes{v1.1a}{2008/11/10}{PDF\TeX\ since 1.40 allows \cs{pdfsavepos} in
-%     DVI mode too}^^A
-%   \changes{v1.1b}{2009/02/16}{if level fixed}^^A
-%   \changes{v1.1c}{2009/02/26}{\protect\XeTeX has working \cs{pdflastxpos}^^A
-%     but no \cs{pdftexversion}}^^A
-%   \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
+% \changes{v1.1}{2006/10/23}{new switch}^^A
+% \changes{v1.1a}{2008/11/10}{PDF\TeX\ since 1.40 allows \cs{pdfsavepos} in
+%   DVI mode too}^^A
+% \changes{v1.1b}{2009/02/16}{if level fixed}^^A
+% \changes{v1.1c}{2009/02/26}{\protect\XeTeX has working \cs{pdflastxpos}^^A
+%   but no \cs{pdftexversion}}^^A
+% \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
+% \changes{v1.3}{2018/04/13}{removed}^^A
 % \begin{macro}{\@mn@mode@prefix}
-%   \changes{v1.2}{2016/06/02}{(new (internal)}^^A
-% We need to know, whether or not PDF\TeX{} and which version of PDF\TeX{} is
-% used. With PDF\TeX{} the horizontal output position may be detected using
-% \cs{pdfsavepos} and \cs{pdflastxpos}. So the relative position of the margin
-% may be calculated. Without PDF\TeX{} only manual adjustment is
-% available. While PDF mode or not may change before start of the document,
-% setting up the switch is delayed.
-%    \begin{macrocode}
-\newif\if@mn@pdfmode\@mn@pdfmodefalse
-\newcommand*{\@mn@mode@prefix}{pdf}
-\AtBeginDocument{%
-  \begingroup\expandafter\expandafter\expandafter\endgroup
-  \expandafter\ifx\csname pdflastxpos\endcsname\relax
-    \begingroup\expandafter\expandafter\expandafter\endgroup
-    \expandafter\ifx\csname lastxpos\endcsname\relax\else
-      \@mn@pdfmodetrue
-      \renewcommand*{\@mn@mode@prefix}{}%
-    \fi
-  \else % bg or 1
-    \begingroup\expandafter\expandafter\expandafter\endgroup
-    \expandafter\ifx\csname pdftexversion\endcsname\relax % bg 2
-      \begingroup\expandafter\expandafter\expandafter\endgroup
-      \expandafter\ifx\csname pdfoutput\endcsname\relax % bg 3
-        \begingroup\expandafter\expandafter\expandafter\endgroup
-        \expandafter\ifx\csname XeTeXrevision\endcsname\relax\else % bg 4
-          \@mn@pdfmodetrue
-        \fi % ed 4
-      \else % or 3
-        \ifcase\pdfoutput\else\@mn@pdfmodetrue\fi % bg ed 4
-      \fi % ed 3
-    \else % or 2
-      \ifnum \pdftexversion<140 % bg 3
-        \begingroup\expandafter\expandafter\expandafter\endgroup
-        \expandafter\ifx\csname pdfoutput\endcsname\relax % bg 4
-        \else % or 4
-          \ifcase\pdfoutput\else\@mn@pdfmodetrue\fi % bg ed 5
-        \fi % ed 4
-      \else % or 3
-        \@mn@pdfmodetrue
-      \fi % ed 3
-    \fi % ed 2
-  \fi % ed 1
-  \if@mn@verbose
-    \if@mn@pdfmode
-      \PackageInfo{marginnote}{%
-        \string\pdfoutput\space not 0 or unimportant and\MessageBreak
-        \string\pdflastxpos\space or \string\lastxpos\space 
-        available.\MessageBreak
-        Extended position detection mode activated\@gobble
-      }%
-    \else
-      \PackageInfo{marginnote}{%
-        either \string\pdflastxpos\space or \string\pdfoutput\space not
-        available\MessageBreak
-        or \string\pdfoutput\space set to 0.\MessageBreak
-        Extended position detection mode deactivated\@gobble
-      }%
-    \fi
-  \fi
-}
-%    \end{macrocode}
+% \changes{v1.2}{2016/06/02}{(new (internal)}^^A
+% \changes{v1.3}{2018/04/13}{removed}^^A
 % \end{macro}
 % \end{macro}
 %
 % \begin{macro}{\marginnotetextwidth}
-%   \changes{v1.1}{2006/10/23}{new macro}
+% \changes{v1.1}{2006/10/23}{new macro}
 % Some environments change \cs{textwidth}. But at PDF mode we need to know the
 % real text width to find the right margin. So we use our own text width
 % macro. Sometimes it may be useful if the user can set it up. Because of
@@ -516,32 +472,30 @@
 %    \begin{macrocode}
 \newcommand*{\marginnotetextwidth}{}
 \let\marginnotetextwidth\textwidth
-\AtBeginDocument{\if@mn@pdfmode\edef\marginnotetextwidth{\the\textwidth}\fi}
+\AtBeginDocument{\edef\marginnotetextwidth{\the\textwidth}}
 %    \end{macrocode}
 % \end{macro}
 %
 % \begin{macro}{\@mn@margintest}
-%   \changes{v1.1}{2006/10/23}{new PDF mode feature}
+% \changes{v1.1}{2006/10/23}{new PDF mode feature}
 % \begin{macro}{\@mn@thispage}
 % \begin{macro}{\@mn@atthispage}
 % \begin{macro}{\@mn@currpage}
-%   \changes{v1.1}{2006/10/23}{new (internal)}
+% \changes{v1.1}{2006/10/23}{new (internal)}
 % \begin{macro}{\@mn@currxpos}
-%   \changes{v1.1}{2006/10/23}{new (internal)}
+% \changes{v1.1}{2006/10/23}{new (internal)}
 % \begin{macro}{\mn@abspage}
-%   Macro \cs{@mn@margintest} does the complete test, which margin to use. The
-%   result may be found at \cs{if@tempswa}. To avoid changes on the last page
-%   if there is a new note on the first page, try to count the notes by
-%   page. We know that this can not be successful, but never the less it may
-%   be a good try. \cs{@mn@thispage} saves the page number of the last usage
-%   of \cs{@mn@margintest}. \cs{@mn@atthispage} saves the number of margin
-%   note at this page. But we need to know the absolut page number to do
-%   this. So we increase the absolut page number \texttt{mn@abspage} at every
-%   \cs{@outputpage}. \cs{@mn@currpage} is the page from the page label if
-%   found. \cs{@mn@currxpos} is somehow special. Using PDF\TeX{} the real $x$
-%   position may be written with the page label and used to calculate the
-%   correct horizontal offset. In this case \cs{marginnoteleftadjust} and
-%   \cs{marginnoterightadjust} will not be used!
+% Macro \cs{@mn@margintest} does the complete test, which margin to use. The
+% result may be found at \cs{if@tempswa}. To avoid changes on the last page
+% if there is a new note on the first page, try to count the notes by
+% page. We know that this can not be successful, but never the less it may
+% be a good try. \cs{@mn@thispage} saves the page number of the last usage
+% of \cs{@mn@margintest}. \cs{@mn@atthispage} saves the number of margin
+% note at this page. But we need to know the absolut page number to do
+% this. So we increase the absolut page number \texttt{mn@abspage} at every
+% \cs{@outputpage}. \cs{@mn@currpage} is the page from the page label if
+% found. \cs{@mn@currxpos} is the real $x$ position may be written with the
+% page label and used to calculate the correct horizontal offset.
 %    \begin{macrocode}
 \newcommand*{\@mn@thispage}{}
 \newcommand*{\@mn@currpage}{}
@@ -551,7 +505,7 @@
   \g@addto@macro\@outputpage{\stepcounter{mn@abspage}}}
 \newcommand*{\@mn@margintest}{%
 %    \end{macrocode}
-%   \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
+% \changes{v1.2}{2016/06/02}{addition for lua\TeX{} from 0.85}^^A
 %   Number of the next margin note at this page.
 %    \begin{macrocode}
   \expandafter\ifx\csname @mn@thispage\endcsname\@empty
@@ -567,32 +521,28 @@
   \fi
   \xdef\@mn@thispage{\themn@abspage}%
 %    \end{macrocode}
-%   Use the number of the page and the number of the margin note at this page
-%   to save the real number of this page at the \texttt{aux} file. At PDF mode
-%   save the current $x$ position too.
+% Use the number of the page and the number of the margin note at this page
+% to save the real number of this page at the \texttt{aux} file. At PDF mode
+% save the current $x$ position too.
+% \changes{v1.3}{2018/04/13}{use new internals \cs{mn@savepos} and
+%   \cs{mn@lastxpos}}^^A
+% \changes{v1.3}{2018/04/13}{non PDF mode removed}^^A
 %    \begin{macrocode}
   \let\@mn@currpage\relax
   \let\@mn@currxpos\relax
-  \if@mn@pdfmode
-    \@nameuse{\@mn@mode@prefix savepos}%
-    \protected@write\@auxout{\let\themn@abspage\relax}{%
-      \string\newmarginnote{note.\@mn@thispage.\@mn@atthispage}{%
-        {\themn@abspage}{\noexpand\number\@nameuse{\@mn@mode@prefix lastxpos}sp}}%
-    }%
-  \else
-    \protected@write\@auxout{\let\themn@abspage\relax}{%
-      \string\newmarginnote{note.\@mn@thispage.\@mn@atthispage}{%
-        {\themn@abspage}{}}%
-    }%
-  \fi
+  \mn@savepos
+  \protected@write\@auxout{\let\themn@abspage\relax}{%
+    \string\newmarginnote{note.\@mn@thispage.\@mn@atthispage}{%
+      {\themn@abspage}{\noexpand\number\mn@lastxpos sp}}%
+  }%
 %    \end{macrocode}
-%   If the margin note label was not defined, it seems to be new. In this case
-%   the absolut page number will be used for the test instead of the saved
-%   real page number.
+% If the margin note label was not defined, it seems to be new. In this case
+% the absolut page number will be used for the test instead of the saved
+% real page number.
 %    \begin{macrocode}
   \expandafter\ifx\csname mn@note.\@mn@thispage.\@mn@atthispage\endcsname\relax
 %    \end{macrocode}
-%   If we are not in two side mode, we are on a odd page.
+% If we are not in two side mode, we are on a odd page.
 %    \begin{macrocode}
     \if@twoside
       \if@mn@verbose
@@ -649,14 +599,12 @@
 % from \cs{pdfpagewidth} (or \cs{pagewidth} using Lua\TeX, but this cannot be,
 % because \textsf{bidi} is not Lua\TeX-compatible).
 %    \begin{macrocode}
-      \begingroup\expandafter\expandafter\expandafter\endgroup
-      \expandafter\ifx\csname \@mn@mode@prefix pagewidth\endcsname\relax\else
+      \ifdefined\mn@pagewidth
         \@mn@if@RTL{%
           \PackageInfo{marginnote}{Margin note
             \@mn@thispage.\@mn@atthispage\space in RTL mode}%
           \edef\@mn@currxpos{%
-            \the\dimexpr\@nameuse{\@mn@mode@prefix pagewidth}
-                        -\@mn@currxpos\relax
+            \the\dimexpr\mn@pagewidth-\@mn@currxpos\relax
           }%
         }{}%
       \fi
@@ -664,20 +612,37 @@
     \edef\@mn@currpage{\expandafter\@firstoftwo\@mn@currpage}%
     \if@mn@verbose
       \PackageInfo{marginnote}{Margin note \@mn@thispage.\@mn@atthispage\space
-        is on absolute page \@mn@currpage\MessageBreak}%
+        is on absolute page \@mn@currpage}%
     \fi
     \if@twoside
       \ifodd\@mn@currpage\relax
         \@tempswatrue
+        \if@twocolumn
+          \ifdim \@mn@currxpos
+                 < \dimexpr\oddsidemargin+\columnwidth+\columnsep\relax
+            \@tempswafalse
+          \fi
+        \fi
       \else
         \@tempswafalse
+        \if@twocolumn
+          \ifdim\@mn@currxpos>\dimexpr\evensidemargin+\columnwidth\relax
+            \@tempswatrue
+          \fi
+        \fi  
       \fi
     \else
       \if@mn@verbose
         \PackageInfo{marginnote}{right page because not two side mode}%
       \fi
       \@tempswatrue
-    \fi
+      \if@twocolumn
+        \ifdim \@mn@currxpos
+               < \dimexpr\oddsidemargin+\columnwidth+\columnsep\relax
+          \@tempswafalse
+        \fi
+      \fi
+    \fi  
   \fi
 }
 %    \end{macrocode}
@@ -782,42 +747,26 @@
 % current $x$ position of the last PDF\LaTeX{} run and may be used to
 % calculate the real horizontal offset.
 %    \begin{macrocode}
-            \ifx\@mn@currxpos\relax
-              \kern\marginnoterightadjust
-              \if@mn@verbose
-                \PackageInfo{marginnote}{%
-                  xpos not known,\MessageBreak
-                  using \string\marginnoterightadjust}%
+            \if@mn@verbose
+              \PackageInfo{marginnote}{xpos seems to be \@mn@currxpos}%
+            \fi
+            \begingroup
+              \ifx\@mn@currxpos\relax\else\ifx\@mn@currxpos\@empty\else
+                  \kern-\dimexpr\@mn@currxpos\relax
+              \fi\fi
+              \ifx\@mn@currpage\relax
+                \let\@mn@currpage\@ne
               \fi
-            \else\ifx\@mn@currxpos\@empty
-                \kern\marginnoterightadjust
-                \if@mn@verbose
-                  \PackageInfo{marginnote}{%
-                    xpos not known,\MessageBreak
-                    using \string\marginnoterightadjust}%
+              \if@twoside\ifodd\@mn@currpage\relax
+                  \kern\oddsidemargin
+                \else
+                  \kern\evensidemargin
                 \fi
               \else
-                \if@mn@verbose
-                  \PackageInfo{marginnote}{%
-                    xpos seems to be \@mn@currxpos,\MessageBreak
-                    \string\marginnoterightadjust
-                    \space ignored}%
-                \fi
-                \begingroup
-                  \setlength{\@tempdima}{\@mn@currxpos}%
-                  \kern-\@tempdima
-                  \if@twoside\ifodd\@mn@currpage\relax
-                      \kern\oddsidemargin
-                    \else
-                      \kern\evensidemargin
-                    \fi
-                  \else
-                    \kern\oddsidemargin
-                  \fi
-                  \kern 1in
-                \endgroup
+                \kern\oddsidemargin
               \fi
-            \fi
+              \kern 1in
+            \endgroup
             \kern\marginnotetextwidth\kern\marginparsep
             \vbox to\z@{\kern\marginnotevadjust\kern #3
               \vbox to\z@{%
@@ -858,43 +807,30 @@
                 \kern-\parskip
                 \marginfont\raggedleftmarginnote\strut\hspace{\z@}%
                 \ignorespaces#1\endgraf
-                \vss}%
-              \vss}%
-            \ifx\@mn@currxpos\relax
-              \kern\marginnoteleftadjust
-              \if@mn@verbose
-                \PackageInfo{marginnote}{%
-                  xpos not known,\MessageBreak
-                  using \string\marginnoteleftadjust}%
+                \vss
+              }%
+              \vss
+            }%
+            \if@mn@verbose
+              \PackageInfo{marginnote}{xpos seems to be \@mn@currxpos}%
+            \fi
+            \begingroup
+              \ifx\@mn@currxpos\relax\else\ifx\@mn@currpos\@empty\else
+                  \kern\@mn@currxpos
+              \fi\fi
+              \ifx\@mn@currpage\relax
+                \let\@mn@currpage\@ne
               \fi
-            \else\ifx\@mn@currxpos\@empty
-                \kern\marginnoteleftadjust
-                \if@mn@verbose
-                  \PackageInfo{marginnote}{%
-                    xpos not known,\MessageBreak
-                    using \string\marginnoteleftadjust}%
+              \if@twoside\ifodd\@mn@currpage\relax
+                  \kern-\oddsidemargin
+                \else
+                  \kern-\evensidemargin
                 \fi
               \else
-                \if@mn@verbose
-                  \PackageInfo{marginnote}{%
-                    xpos seems to be \@mn@currxpos,\MessageBreak
-                    \string\marginnoteleftadjust
-                    \space ignored}%
-                \fi
-               \begingroup
-                  \kern\@mn@currxpos
-                  \if@twoside\ifodd\@mn@currpage\relax
-                      \kern-\oddsidemargin
-                    \else
-                      \kern-\evensidemargin
-                    \fi
-                  \else
-                    \kern-\oddsidemargin
-                  \fi
-                  \kern-1in
-                \endgroup
+                \kern-\oddsidemargin
               \fi
-            \fi
+              \kern-1in
+            \endgroup
             \kern\marginparsep
           }%
         \fi
@@ -909,17 +845,9 @@
 % \end{macro}
 %
 % \begin{macro}{\marginnoterightadjust}
+% \changes{1.3}{2018/04/13}{removed}^^A
 % \begin{macro}{\marginnoteleftadjust}
-% These may be used to define an automatic horizontal adjust. The default is
-% zero. They will be used only if not PDF\TeX{} or PDF\TeX{} before version~1.40
-% in DVI mode is used, because in this case the save position features are not
-% available.
-%    \begin{macrocode}
-\newcommand*{\marginnoterightadjust}{}
-\newcommand*{\marginnoteleftadjust}{}
-\let\marginnoterightadjust\z@
-\let\marginnoteleftadjust\z@
-%    \end{macrocode}
+% \changes{1.3}{2018/04/13}{removed}^^A
 % \end{macro}
 % \end{macro}
 %
