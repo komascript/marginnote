@@ -614,6 +614,7 @@
       \fi
 %    \end{macrocode}
 % \changes{v1.2b}{2017/04/22}{\textsf{bidi} code added}^^A
+% \changes{v1.3}{2018/04/13}{\texttt{twocolumn} test added}^^A
 % If you are using package \textsf{bidi} and RTL mode is active, the position
 % is from right instead of left. So we have to substract \cs{@mn@currxpos}
 % from \cs{pdfpagewidth} (or \cs{pagewidth} using Lua\TeX, but this cannot be,
@@ -667,7 +668,7 @@
 }
 %    \end{macrocode}
 % \begin{macro}{@mn@ifRTL}
-%   \changes{1.2b}{2017/04/22}{new internal}
+%   \changes{v1.2b}{2017/04/22}{new internal}
 % Test, whether or not \cs{if@RTL} exists and is true or false.
 %    \begin{macrocode}
 \newcommand*{\@mn@if@RTL}{%
@@ -865,9 +866,9 @@
 % \end{macro}
 %
 % \begin{macro}{\marginnoterightadjust}
-% \changes{1.3}{2018/04/13}{removed}^^A
+% \changes{v1.3}{2018/04/13}{removed}^^A
 % \begin{macro}{\marginnoteleftadjust}
-% \changes{1.3}{2018/04/13}{removed}^^A
+% \changes{v1.3}{2018/04/13}{removed}^^A
 % \end{macro}
 % \end{macro}
 %
