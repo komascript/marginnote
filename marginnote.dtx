@@ -223,6 +223,14 @@
 %
 % \section{Known Issues Using \textsf{marginnote}}
 %
+% From version 1.3 \texttt{marginnote} does not longer support \TeX{} engines
+% without primitives \cs{pdfsavepos}/\cs{savepos} and
+% \cs{pdflastxpos}/\cs{lastxpos}. The former (manual adjustment) fallback has
+% been removed. You'll get an error message, if you try to use a \TeX{} engine
+% without these primitives. Also $\varepsilon$-\TeX{} primitves are
+% needed. However, with current free \TeX{} distributions like MiK\TeX{} or
+% \TeX Live this shouldn't be a problem.
+%
 % At double side layout (e.g. using class option \texttt{twoside})
 % \cs{marginnote} needs to know the number of the current page to decide
 % whether the page is odd or even and so whether to use left or right
@@ -254,7 +262,7 @@
 %
 % No page break may occur inside a margin note created with \cs{marginnote}.
 %
-% \cs{marginnote} somewhat different from \cs{marginpar} if used immediate
+% \cs{marginnote} is somewhat different from \cs{marginpar} if used immediate
 % after \cs{item}. This is not a bug, it's a feature!
 %
 % With math \cs{marginnote} may work or may not depending on the math
@@ -271,6 +279,18 @@
 % options may help.
 %
 % You should not use \cs{marginnote} at the optional argument of \cs{item}.
+%
+% If \cs{if@twocolumn} is \cs{iftrue}, e.g., because you are using option
+% |twocolumn| or command |\twocolumn|, \cs{marginnote} does decide whether the
+% note should be placed left of the column or right of the columns simply by
+% comaring the current horizontal possition with |\columnwidth+\columnsep|. So
+% if the current horizontal possition is somewhere in the left columns, the
+% note is placed in the left margin. If the current horizontal possition is
+% somewhere right of the left column, the note is placed in the right
+% margin. However, support for twocolumn mode is as problematic as support for
+% reverse margin notes. I do not like it. Maybe it will be changed in
+% future. The current support for twocolumn mode has been implemented only
+% because of a feature request by Florent Chervet.
 %
 % \StopEventually{\PrintIndex\PrintChanges}
 %
