@@ -1,4 +1,4 @@
-% \CheckSum{717}
+% \CheckSum{728}
 % \iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
@@ -43,7 +43,7 @@
 % \iffalse meta-comment
 %<*package|README>
 % \fi^^A meta-comment
-  2018/04/13 v1.3
+  2018/07/01 v1.4
 % \iffalse meta-comment
 %</package|README>
 % \fi^^A meta-comment
@@ -147,20 +147,27 @@
 % to do so. You may also use one of the following options for a global change
 % of the behaviour of \textsf{marginnote}:
 % \begin{description}
-% \item[\texttt{fulladjust}] adjusts the margin note at the height and depth of
-% the current line. Note, that this may sometimes result in extra height and
-% depth of the current line, but results in the best vertical
-% alignment. This is the default.
+% \item[\texttt{fulladjust}] adjusts the margin note at the height and depth
+%   of the current line. Note, that this may sometimes result in extra height
+%   and depth of the current line, but results in the best vertical
+%   alignment. This is the default.
 % \item[\texttt{heightadjust}] adjusts the margin note at the height of the
-% current line but not the depth. Note, that this may sometimes result in
-% extra height of the current line and in vertical misplacement.
+%   current line but not the depth. Note, that this may sometimes result in
+%   extra height of the current line and in vertical misplacement.
 % \item[\texttt{depthadjust}] adjusts the margin note at the depth of the
-% current line but not height. Note, that this may sometimes result in extra
-% depth of the current line and very often in vertical misplacement.
+%   current line but not height. Note, that this may sometimes result in extra
+%   depth of the current line and very often in vertical misplacement.
 % \item[\texttt{noadjust}] does not adjust the margin note at the height or
-% depth of the current line. Note, that this often results in vertical
-% misplacement but seldom in vertical extra space before or after the current
-% line.
+%   depth of the current line. Note, that this often results in vertical
+%   misplacement but seldom in vertical extra space before or after the
+%   current line.
+% \item[\texttt{parboxrestore}] uses \cs{@parboxrestore} to restore the
+%   definition of \cs{par} and \cmd\\ and several other commands and sets
+%   \cs{parindent} and \cs{parskip} to 0, \cs{parfillskip} to 0\,pt plus
+%   1\,fil and \cs{lineskip} to \cs{normallineskip} and \cs{baselineskip} to
+%   \cs{normalbaselineskip} for every margin note. This is the default since
+%   release 1.4 of \textsf{marginnote}.
+% \item[\texttt{noparboxrestore}] does not use \cs{@parboxrestore}.
 % \end{description}
 %
 % \DescribeMacro{\marginnote}
@@ -385,7 +392,7 @@
 % \changes{v1.1e}{2009/06/06}{new options \texttt{fulladjust},
 %   \texttt{heightadjust}, \texttt{depthadjust}, and \texttt{noadjust}}
 % \begin{macro}{\mn@strut}
-%   \changes{v1.1e}{2009/06/06}{new (semi internal)}
+% \changes{v1.1e}{2009/06/06}{new (semi internal)}
 % The package needs to adjust the margin note at the current line. Sometimes
 % this causes extra vertical line spacing. To avoid this you may redefine
 % \cs{mn@strut}. The default value is \cs{strut}.
@@ -452,17 +459,34 @@
 % \end{macro}
 % \end{macro}
 %
+% \changes{v1.4}{2018/07/01}{new options \texttt{parboxrestore} (default) and
+%   \texttt{noparboxrestore}}^^A
+% \begin{macro}{\mn@parboxrestore}
+% \changes{v1.4}{2018/07/01}{new internal command}^^A
+% We can either use \cs{@parboxrestore} inside the margin notes or dont use
+% it. I would recommend to use it, so this will be the new default.
 %    \begin{macrocode}
-\ExecuteOptions{verbose,fulladjust}
+\newcommand*{\mn@parboxrestore}{}
+\DeclareOption{parboxrestore}{%
+  \renewcommand*{\mn@parboxrestore}{\@parboxrestore}%
+}
+\DeclareOption{noparboxrestore}{%
+  \renewcommand*{\mn@parboxrestore}{}%
+}
+%    \end{macrocode}
+% \end{macro}
+%
+%    \begin{macrocode}
+\ExecuteOptions{verbose,fulladjust,parboxrestore}
 \ProcessOptions\relax
 %    \end{macrocode}
 %
 % \begin{macro}{\newmarginnote}
-%   We need a macro to define a new note at the \texttt{aux} file. This will
-%   be done using the mechanism of \LaTeX{} that is used for
-%   \cs{newlabel}. But we use another prefix. This will result in the usual
-%   ``Labels(s) may have changed. Rerun to get cross-references right.'' if a
-%   margin note is new or have moved to another page.
+% We need a macro to define a new note at the \texttt{aux} file. This will
+% be done using the mechanism of \LaTeX{} that is used for
+% \cs{newlabel}. But we use another prefix. This will result in the usual
+% ``Labels(s) may have changed. Rerun to get cross-references right.'' if a
+% margin note is new or have moved to another page.
 %    \begin{macrocode}
 \newcommand*{\newmarginnote}{\@newl@bel{mn}}
 %    \end{macrocode}
@@ -668,7 +692,7 @@
 }
 %    \end{macrocode}
 % \begin{macro}{@mn@ifRTL}
-%   \changes{v1.2b}{2017/04/22}{new internal}
+% \changes{v1.2b}{2017/04/22}{new internal}
 % Test, whether or not \cs{if@RTL} exists and is true or false.
 %    \begin{macrocode}
 \newcommand*{\@mn@if@RTL}{%
@@ -691,10 +715,10 @@
 % \begin{macro}{\marginnote}
 % \begin{macro}{\@mn@marginnote}
 % \begin{macro}{\@mn@@marginnote}
-%   \changes{v1.1g}{2011/04/11}{missing \cs{long} added}
+% \changes{v1.1g}{2011/04/11}{missing \cs{long} added}
 % \begin{macro}{\@mn@@@marginnote}
-%   \changes{v1.1}{2006/10/23}{new PDF mode feature}
-%   \changes{v1.1g}{2011/04/11}{missing \cs{long} added}
+% \changes{v1.1}{2006/10/23}{new PDF mode feature}
+% \changes{v1.1g}{2011/04/11}{missing \cs{long} added}
 % Command \cs{marginnote} is the main macro of the package. The others are
 % helpers to manage the optional arguments.
 %    \begin{macrocode}
@@ -730,8 +754,8 @@
 \newcommand{\@mn@@@marginnote}{}
 \long\def\@mn@@@marginnote[#1]#2[#3]{%
 %    \end{macrocode}
-%   \changes{v1.1b}{2009/02/16}{use \cs{mn@vadjust} instead of \cs{vadjust}}%
-%   \changes{v1.1e}{2009/06/06}{use \cs{mn@strut} instead of \cs{strut}}%
+% \changes{v1.1b}{2009/02/16}{use \cs{mn@vadjust} instead of \cs{vadjust}}%
+% \changes{v1.1e}{2009/06/06}{use \cs{mn@strut} instead of \cs{strut}}%
 % All changes (but change of counters that are global because of using the
 % \LaTeX{} commands to change them an \cs{gdef} and \cs{xdef}) should be
 % local. In h-mode a \cs{strut} will be used to fix base line. The margin
@@ -793,16 +817,18 @@
               \vbox to\z@{%
                 \hsize\marginparwidth
 %    \end{macrocode}
-%   \changes{v1.1g}{2011/04/11}{set \cs{linewidth}}
+% \changes{v1.1g}{2011/04/11}{set \cs{linewidth}}
 %    \begin{macrocode}
                 \linewidth\hsize
 %    \end{macrocode}
-%   Here's the correction of the vertical position. The remain is simple.
-%   \changes{v1.1i}{2012/03/29}{\cs{strut} moved to fix hyphenation (thanks to
-%     Ulrike Fischer)}
-%   \changes{v1.1i}{2012/03/29}{\cs{ignorespaces} added}
+% Here's the correction of the vertical position. The remain is simple.
+% \changes{v1.1i}{2012/03/29}{\cs{strut} moved to fix hyphenation (thanks to
+%   Ulrike Fischer)}
+% \changes{v1.1i}{2012/03/29}{\cs{ignorespaces} added}^^A
+% \changes{v1.4}{2018/07/01}{\cs{mn@parboxrestore} added}^^A
 %    \begin{macrocode}
                 \kern-\parskip
+                \mn@parboxrestore
                 \marginfont\raggedrightmarginnote\strut\hspace{\z@}%
                 \ignorespaces#2\endgraf
                 \vss}%
@@ -810,22 +836,23 @@
           }%
         \else
 %    \end{macrocode}
-%   Using the left margin.
-%   \changes{v1.1f}{2010/01/05}{missing usage of \cs{marginnotevadjust} on
-%     left margin fixed}
+% Using the left margin.
+% \changes{v1.1f}{2010/01/05}{missing usage of \cs{marginnotevadjust} on
+%   left margin fixed}
 %    \begin{macrocode}
           \llap{%
             \vbox to\z@{\kern\marginnotevadjust\kern #3
               \vbox to\z@{%
                 \hsize\marginparwidth
 %    \end{macrocode}
-%   \changes{v1.1g}{2011/04/11}{set \cs{linewidth}}
+% \changes{v1.1g}{2011/04/11}{set \cs{linewidth}}
 %    \begin{macrocode}
                 \linewidth\hsize
 %    \end{macrocode}
-%   Same like above for left margins.
+% Same like above for left margins.
 %    \begin{macrocode}
                 \kern-\parskip
+                \mn@parboxrestore
                 \marginfont\raggedleftmarginnote\strut\hspace{\z@}%
                 \ignorespaces#1\endgraf
                 \vss
@@ -893,7 +920,7 @@
 % \end{macro}
 %
 % \begin{macro}{\mn@vadjust}
-%   \changes{v1.1b}{2009/02/16}{new (internal)}
+% \changes{v1.1b}{2009/02/16}{new (internal)}
 % This macro is used to set a vertical box at horizontal mode.
 %    \begin{macrocode}
 \newcommand{\mn@vadjust}[1]{%
@@ -906,7 +933,7 @@
 % \end{macro}
 %
 % \begin{macro}{\marginfont}
-%  \changes{v1.0a}{2006/02/06}{Use \cs{providecommand} to define it.}
+% \changes{v1.0a}{2006/02/06}{Use \cs{providecommand} to define it.}
 % \begin{macro}{\raggedleftmarginnote}
 % \begin{macro}{\raggedrightmarginnote}
 %   These are very simple. A class may also define \cs{marginfont}. Use this
