@@ -1,4 +1,4 @@
-% \CheckSum{783}
+% \CheckSum{787}
 % \iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
@@ -13,9 +13,8 @@
 % and version 1.3c or later is part of all distributions of LaTeX
 % version 2005/12/01 or later and of this work.
 %
-% This work has the LPPL maintenance status "maintained".
-%
-% The Current Maintainer and author of this work is Markus Kohm.
+% This work has the LPPL maintenance status "unmaintained".
+% If you want to become the new maintainer please contact the author.
 %
 % This work consists of the files marginnote.dtx and the
 % derived files README.txt and marginnote.sty.
@@ -53,7 +52,7 @@
 % \iffalse meta-comment
 %<*package|README>
 % \fi^^A meta-comment
-  2018/07/23 v1.4b
+  2018/08/09 v1.4b
 % \iffalse meta-comment
 %</package|README>
 % \fi^^A meta-comment
@@ -126,9 +125,10 @@
 %
 % \GetFileInfo{marginnote.dtx}
 %
-% \title{Non-Floating Margin Notes with \textsf{marginnote}
-%   Package\thanks{This file has revision number \fileversion, last revised
-%     \filedate.}}
+% \title{Non-Floating Margin Notes with \textsf{marginnote}\thanks{URL:
+% \texttt{https://komascript.de/marginnote}} Package\thanks{This file has
+% revision number \fileversion, last revised \filedate. Please note: Currently
+% this package is unmaintained. A new maintainer would be welcome!}}
 % \author{Markus Kohm\thanks{Email: \texttt{komascript@gmx.info}}}
 % \date{\packagedateandversion}
 % \maketitle
@@ -171,13 +171,17 @@
 %   depth of the current line. Note, that this often results in vertical
 %   misplacement but seldom in vertical extra space before or after the
 %   current line.
-% \item[\texttt{parboxrestore}] uses \cs{@parboxrestore} to restore the
-%   definition of \cs{par} and \cmd\\ and several other commands and sets
-%   \cs{parindent} and \cs{parskip} to 0, \cs{parfillskip} to 0\,pt plus
-%   1\,fil and \cs{lineskip} to \cs{normallineskip} and \cs{baselineskip} to
-%   \cs{normalbaselineskip} for every margin note. This is the default since
-%   release 1.4 of \textsf{marginnote}.
-% \item[\texttt{noparboxrestore}] does not use \cs{@parboxrestore}.
+% \item[\texttt{parboxrestore}] uses a reduced \cs{@parboxrestore} to restore
+%   the definition of \cs{par} and \cmd\\ and several other commands and sets
+%   \cs{parindent} to 0, \cs{parfillskip} to 0\,pt plus 1\,fil and
+%   \cs{lineskip} to \cs{normallineskip}, \cs{baselineskip} to
+%   \cs{normalbaselineskip} and activates \cs{sloppy} for every margin
+%   note. This is the default since release 1.4b of
+%   \textsf{marginnote}. Release 1.4 and 1.4a also set \cs{parskip} to 0, but
+%   this resulted in a vertical placement issue, e.g.,  inside lists like
+%   \texttt{itemize}.
+% \item[\texttt{noparboxrestore}] does not restore any definition for the
+%   margin notes. This was the behaviour before release 1.4.
 % \end{description}
 %
 % \DescribeMacro{\marginnote}
@@ -239,6 +243,18 @@
 %
 %
 % \section{Known Issues Using \textsf{marginnote}}
+%
+% Currently the package lacks of a new maintainer. The author does not longer
+% maintain the package, because originally it was designed to be only a small
+% hack to be used on some cases. But over the years it has grown and became a
+% conglomerate of hacks that hack hacks that are used very widely. A break
+% with a complete revise of the design would be necessary. But nothing I can
+% or want to do currently. If you want to do it, please contact the author
+% (see the footnotes on the first page).
+%
+% You can not use paragraphs with \cs{par} or empty lines inside a margin
+% note. In my opinion this would note make sense. However, if you really need
+% paragraphs you can try to use \cs{endgraf} instead of \cs{par}.
 %
 % From version 1.4a there is a workaround for double-ended documents with
 % consecutive odd pages or consecutive even pages. However it is not
@@ -484,7 +500,11 @@
 %    \begin{macrocode}
 \newcommand*{\mn@parboxrestore}{}
 \DeclareOption{parboxrestore}{%
-  \renewcommand*{\mn@parboxrestore}{\@parboxrestore}%
+  \renewcommand*{\mn@parboxrestore}{%
+    \@tempskipa\parskip
+    \@parboxrestore
+    \parskip\@tempskipa
+  }%
 }
 \DeclareOption{noparboxrestore}{%
   \renewcommand*{\mn@parboxrestore}{}%
