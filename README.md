@@ -3,7 +3,7 @@ An experimental LaTeX package to add notes in the margin, even where \marginpar 
 
 ---
 
-LaTeX package `marinnote`  
+LaTeX package `marginnote`  
 Copyright (c) 2005—2023 Markus Kohm  
 Release: 2018/08/09 v1.4b  
 Licence: LPPL 1.3c (see LICENSE.md)  
