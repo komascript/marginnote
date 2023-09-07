@@ -1,8 +1,7 @@
-% \CheckSum{787}
-% \iffalse meta-comment
+%\iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
-% Copyright (c) Markus Kohm, 2005-2018
+% Copyright (c) Markus Kohm, 2005-2023
 %
 % This file is part of the work marginnote.
 %
@@ -16,12 +15,12 @@
 % This work has the LPPL maintenance status "unmaintained".
 % If you want to become the new maintainer please contact the author.
 %
-% This work consists of the files marginnote.dtx and the
-% derived files README.txt and marginnote.sty.
+% This work consists of the files marginnote.dtx, README.md,
+% LICENSE.md, and optionally the unpacked files marginnote.pdf and
+% and marginnote.sty.
 % ----------------------------------------------------------------------
 % Note: This file is not only the source but also the docstrip batch
-%       file.  To unpack marginnote.sty and README.txt from the source,
-%       run:
+%       file.  To unpack marginnote.sty from the source, run:
 %
 %         tex marginnote.dtx
 %
@@ -30,50 +29,15 @@
 %       manual marginnote.pdf.
 % ======================================================================
 %
-%<package>%%% From File: $Id$
 %<*dtx>
 \ifx\ProvidesFile\undefined\def\ProvidesFile#1[#2]{}\fi
-\begingroup
-  \def\filedate$#1: #2-#3-#4 #5${\gdef\filedate{#2/#3/#4}}
-  \filedate$Date$
-  \def\filerevision$#1: #2 ${\gdef\filerevision{#2}}
-  \filerevision$Revision$
-\endgroup
-\ProvidesFile{marginnote.dtx}[\filedate\space\filerevision\space
+\ProvidesFile{marginnote.dtx}[2023/09/07 1.4c
 %</dtx>
 %<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01]
-%<package>\ProvidesPackage{marginnote}[%
-%<README>LaTeX package marginnote
-%<README>Copyright (c) Markus Kohm, 2005-2018
-%<README>-------------------------------------------------------------------
-%<README>Version:
-% \fi^^A meta-comment
-% \newcommand*{\packagedateandversion}{%
-% \iffalse meta-comment
-%<*package|README>
-% \fi^^A meta-comment
-  2018/08/09 v1.4b
-% \iffalse meta-comment
-%</package|README>
-% \fi^^A meta-comment
-% }
-% \iffalse meta-comment
-%<README>Licence:
-%<README>  This work may be distributed and/or modified under the conditions 
-%<README>  of the LaTeX Project Public License, version 1.3c of the license.
-%<README>  The latest version of this license is in
-%<README>    http://www.latex-project.org/lppl.txt
-%<README>  and version 1.3c or later is part of all distributions of LaTeX
-%<README>  version 2005/12/01 or later and of this work.
-%<README>Abstract:
-%<README>  This package provides the command \marginnote that may be used
-%<README>  instead of \marginpar at almost every place, where \marginpar
-%<README>  cannot be used, e.g., inside floats, footnotes, frames made with
-%<README>  framed package.  See marginnote.pdf for more information.
-%<README>-------------------------------------------------------------------
-%<*dtx|package>
+%<package>\ProvidesPackage{marginnote}[2018/08/09 1.4b
+%<*package|dtx>
   non floating margin notes for LaTeX]
-%</dtx|package>
+%</package|dtx>
 %<*dtx>
 \ifx\documentclass\undefined
   \input docstrip.tex
@@ -84,8 +48,6 @@
 
   \generate{%
     \file{marginnote.sty}{\from{marginnote.dtx}{package}}%
-    \nopreamble\nopostamble
-    \file{README.txt}{\from{marginnote.dtx}{README}}%
   }
 
   \ifToplevel{%
@@ -96,13 +58,20 @@
     \Msg{*}
     \Msg{* To finish the installation run}
     \Msg{* \space\space pdflatex marginnote.dtx}
+    \Msg{* \space\space mkindex marginnote}
+    \Msg{* \space\space pdflatex marginnote.dtx}
+    \Msg{* \space\space mkindex marginnote}
+    \Msg{* \space\space pdflatex marginnote.dtx}
     \Msg{* After this copy}
     \Msg{* \space\space marginnote.sty to .../tex/latex/marginnote/}
     \Msg{* \space\space marginnote.pdf to .../doc/latex/marginnote/}
     \Msg{* \space\space marginnote.dtx to .../source/latex/marginnote/}
-    \Msg{* \space\space README
-      \space\space\space\space\space\space\space\space to 
-      .../source/latex/marginnote/}
+    \Msg{* \space\space README.md
+      \space\space\space\space\space to 
+      .../doc/latex/marginnote/}
+    \Msg{* \space\space LICENSE.md
+      \space\space\space\space to 
+      .../doc/latex/marginnote/}
     \Msg{* where .../ is your local TDS tree}
     \Msg{*}
     \Msg{*********************************************************************}
@@ -112,9 +81,8 @@
 \fi
 \endbatchfile
 \documentclass{ltxdoc}
-\usepackage{graphicx}% needed for \reflectbox
-\providecommand*{\XeTeX}{%
-  X\kern-.1em\lower.5ex\hbox{\reflectbox{E}}\kern-.15em\TeX}
+\usepackage{hvlogos}
+\usepackage{marginnote}
 \CodelineIndex
 \RecordChanges
 \begin{document}
@@ -123,105 +91,112 @@
 %</dtx>
 %\fi
 %
+% \GetFileInfo{marginnote.sty}
+% \let\pkgversion\fileversion
+% \let\pkgdate\filedate
 % \GetFileInfo{marginnote.dtx}
 %
-% \title{Non-Floating Margin Notes with \textsf{marginnote}\thanks{URL:
-% \texttt{https://komascript.de/marginnote}} Package\thanks{This file has
-% revision number \fileversion, last revised \filedate. Please note: Currently
-% this package is unmaintained. A new maintainer would be welcome!}}
-% \author{Markus Kohm\thanks{Email: \texttt{komascript@gmx.info}}}
-% \date{\packagedateandversion}
+% \title{Non-Floating Margin Notes with \textsf{marginnote}
+%   Package\thanks{This file has version \fileversion, last revised
+%     \filedate. \textsf{marginnote} is version \pkgversion, last revised
+%     \pkgdate.}}
+% \author{Markus Kohm \textcolor{red}{(inactive)}\thanks{From version 1.4b the
+%     package is unmaintained. But there is a public repository with issue
+%     tracker at \url{https://github.com/komascript/marginnote}. So everybody
+%     can contribute and reported issues will not be lost, if a new maintainer
+%     will be found.}}
 % \maketitle
 %
 % \begin{abstract}
-%   In \LaTeX{} the command \cs{marginpar}\oarg{left}\marg{right} might be
-%   used to create a note in the margin. But there is a problem with this
-%   command: it creates a special kind of float. For this it cannot be used
-%   e.g., at floats or footnotes. Package \textsl{marginnote} supports another
-%   command \cs{marginnote} to create notes in the margin. This does not use a
-%   kind of float and for this does not have the disadvantage of
-%   \cs{marginpar}. But there might be other problems \dots
+%   In \LaTeX{} the command \cs{marginpar}\oarg{left}\marg{right} can be used
+%   to create a note in the margin. But there is a problem with this command:
+%   It creates a special kind of float. So it cannot be used on floats or
+%   footnotes. The \textsl{marginnote} package supports another command
+%   \cs{marginnote} to create notes in the margin. This does not use any kind
+%   of float and therefore does not have the disadvantage of
+%   \cs{marginpar}. But there may be other problems \dots
 % \end{abstract}
 %
 % \tableofcontents
 %
 % \changes{v1.0b}{2006/14/03}{spelling fixes}
 % \changes{v1.2b}{2017/10/14}{spelling fixes (by Thomas Reuben)}
+% \changes{v1.4c}{2023/09/07}{some documentation corrections only}
 %
 % \section{How to Use \textsf{marginnote} Package}
 %
-% First of all you have to load. You may use:
+% First of all you have to load the package. You can use:
 % \begin{verbatim}
 % \usepackage{marginnote}
 % \end{verbatim}\vskip-\baselineskip
-% to do so. You may also use one of the following options for a global change
-% of the behaviour of \textsf{marginnote}:
+% to do so. You can also use one of the following options to globally change
+% the behaviour of \textsf{marginnote}:
 % \begin{description}
-% \item[\texttt{fulladjust}] adjusts the margin note at the height and depth
-%   of the current line. Note, that this may sometimes result in extra height
-%   and depth of the current line, but results in the best vertical
-%   alignment. This is the default.
-% \item[\texttt{heightadjust}] adjusts the margin note at the height of the
-%   current line but not the depth. Note, that this may sometimes result in
-%   extra height of the current line and in vertical misplacement.
-% \item[\texttt{depthadjust}] adjusts the margin note at the depth of the
-%   current line but not height. Note, that this may sometimes result in extra
-%   depth of the current line and very often in vertical misplacement.
-% \item[\texttt{noadjust}] does not adjust the margin note at the height or
-%   depth of the current line. Note, that this often results in vertical
-%   misplacement but seldom in vertical extra space before or after the
-%   current line.
+% \item[\texttt{fulladjust}] adjusts the margin note to the height and depth
+%   of the current line. Note that this may sometimes add an extra height and
+%   depth to the current line, but gives the best vertical alignment. This is
+%   the default.
+% \item[\texttt{heightadjust}] adjusts the margin note to the height of the
+%   current line, but not the depth. Note that this can sometimes result in
+%   extra height and vertical offset of the current line.
+% \item[\texttt{depthadjust}] adjusts the margin note to the depth of the
+%   current line, but not the height. Note that this can sometimes result in
+%   extra depth and vertical offset of the current line.
+% \item[\texttt{noadjust}] does not adjust the margin note to the height or
+%   depth of the current line. line. Note that this often results in vertical
+%   offsets, but rarely in vertical extra space before or after the current
+%   line.
 % \item[\texttt{parboxrestore}] uses a reduced \cs{@parboxrestore} to restore
-%   the definition of \cs{par} and \cmd\\ and several other commands and sets
+%   the definition of \cs{par} and \cmd\\ and some other commands, and sets
 %   \cs{parindent} to 0, \cs{parfillskip} to 0\,pt plus 1\,fil and
 %   \cs{lineskip} to \cs{normallineskip}, \cs{baselineskip} to
-%   \cs{normalbaselineskip} and activates \cs{sloppy} for every margin
-%   note. This is the default since release 1.4b of
+%   \cs{normalbaselineskip} and enables \cs{sloppy} for every margin
+%   note. This is the default since the 1.4b release of
 %   \textsf{marginnote}. Release 1.4 and 1.4a also set \cs{parskip} to 0, but
-%   this resulted in a vertical placement issue, e.g.,  inside lists like
+%   this caused a vertical placement problem, e.g., inside lists like
 %   \texttt{itemize}.
 % \item[\texttt{noparboxrestore}] does not restore any definition for the
-%   margin notes. This was the behaviour before release 1.4.
+%   margin notes. This was the behaviour before the 1.4 release.
 % \end{description}
 %
 % \DescribeMacro{\marginnote}
-% The command \cs{marginnote}\oarg{left}\marg{right}\oarg{voffset} may be used
-% to set a margin note using \textsf{marginnote}. The first optional argument
-% and the mandatory argument are same using \cs{marginpar} from the \LaTeX{}
-% kernel. Even \cs{reversemarginpar} will be considered. The note \meta{left}
-% or \meta{right} will be put at the current vertical position. Second
-% optional argument \meta{voffset} may be used to adjust the vertical position
-% of the margin note. Use a negative dimension to move it up or a positive
-% dimension to move it down.
+% The command \cs{marginnote}\oarg{left}\marg{right}\oarg{voffset} can be used
+% to set a margin note using the \textsf{marginnote} package. The first
+% optional argument and the mandatory argument are the same as for
+% \cs{marginpar} from the \LaTeX{} kernel. Even \cs{reversemarginpar} is taken
+% into account. The note \meta{left} or \meta{right} is set to the current
+% vertical position. The second optional argument \meta{voffset} can be used
+% to adjust the vertical position of the margin note. Use a negative dimension
+% to move it up or a positive dimension to move it down.
 %
 % \DescribeMacro{\marginnotetextwidth}
-% Package \textsl{marginnote} needs to know the real width of the type area to
-% find the right margin. While some environments (e.g., those of package
-% \textsl{framed}) change \cs{textwidth}, \textsl{marginnote} defines its own
-% text width macro. If you change type area after \cs{begin\{document\}} you
-% should add
+% The \textsl{marginnote} package needs to know the real width of the text
+% area to find the right margin. While some environments (e.g., of the
+% \textsl{framed} package) change \cs{textwidth}, \textsl{marginnote} defines
+% its own text width macro. If you change the text area after
+% \cs{begin\{document\}} you should add
 % \begin{verbatim}
 %   \edef\marginnotetextwidth{\the\textwidth}
 % \end{verbatim}\vskip-\baselineskip
-% after changing the type area. Maybe you should do this globally using
+% after changing the text area. You may want to do this globally using
 % \verb|\xdef| instead of \verb|\edef|. Most users will never need to change
 % \cs{marginnotetextwidth}.
 %
 % \DescribeMacro{\marginnotevadjust}
-% At some environments the vertical adjustment of the margin note will be
-% wrong, e.g., one base line to low. In this case you may use the additional
-% optional argument of \cs{marginnote} at every usage of \cs{marginnote} or
-% redefine \cs{marginnotevadjust} at the begin of the environment. The default
-% definition is \texttt{0pt}.
+% In some environments the vertical adjustment of the margin note is
+% incorrect, e.g., one baseline too low. In this case, you can use the
+% additional optional argument of \cs{marginnote} each time \cs{marginnote} is
+% used, or redefine \cs{marginnotevadjust} at the beginning of the
+% environment. The default definition is \texttt{0pt}.
 %
 % \DescribeMacro{\raggedleftmarginnote}
 % \DescribeMacro{\raggedrightmarginnote}
-% These macros define how the margin note will be aligned. The defaults are:
+% These macros define how the margin note is aligned. The defaults are
 % \begin{itemize}
 % \item align margin notes at the left margin right to the margin,
 % \item align margin notes at the right margin left to the margin.
 % \end{itemize}
-% You may change this using \cs{renewcommand}, e.g., use^^A
+% You can change this using \cs{renewcommand}, e.g., use^^A
 % \changes{v1.0a}{2006/02/06}{Example to macros \cs{raggedleftmarginnote} and
 %   \cs{raggedrightmarginnote} at documentation fixed [thanks to Susumu
 %   Tanimura].}
@@ -229,108 +204,111 @@
 % \renewcommand*{\raggedleftmarginnote}{}
 % \renewcommand*{\raggedrightmarginnote}{\centering}
 % \end{verbatim}\vskip-\baselineskip
-% to get justified text at the left and centered text at the right margin.
+% to get justified text on the left and centered text on the right margin.
 %
 % \DescribeMacro{\marginfont}
-% This macro defines the font that will be used to set margin notes. The
-% default is \cs{normalcolor}. You may use \cs{renewcommand} to change this,
-% e.g. use
+% This macro sets the font to be used for margin notes. The
+% default is \cs{normalcolor}. You may can \cs{renewcommand} to change this,
+% e.g., use
 % \begin{verbatim}
 % \renewcommand*{\marginfont}{\color{red}\sffamily}
 % \end{verbatim}\vskip-\baselineskip
-% to get red colored margin notes in sans serif font family. You need to load
-% e.g. package \textsf{color} to use \cs{color}.
+% to get red colored margin notes in the sans serif font family. Don't forget:
+% You need to load the \textsf{color} package or the \textsf{xcolor} package
+% to use \cs{color}.
 %
 %
-% \section{Known Issues Using \textsf{marginnote}}
+% \section{Issues Using \textsf{marginnote}}
 %
-% Currently the package lacks of a new maintainer. The author does not longer
-% maintain the package, because originally it was designed to be only a small
-% hack to be used on some cases. But over the years it has grown and became a
-% conglomerate of hacks that hack hacks that are used very widely. A break
-% with a complete revise of the design would be necessary. But nothing I can
-% or want to do currently. If you want to do it, please contact the author
-% (see the footnotes on the first page).
-%
-% You can not use paragraphs with \cs{par} or empty lines inside a margin
-% note. In my opinion this would note make sense. However, if you really need
-% paragraphs you can try to use \cs{endgraf} instead of \cs{par}.
-%
-% From version 1.4a there is a workaround for double-ended documents with
-% consecutive odd pages or consecutive even pages. However it is not
-% recommended to use double-ended documents with such page sequences, because
-% printing such documents could be a mess. \texttt{marginnote} shows a warning
-% message whenever it detects those page sequences.
-%
-% From version 1.3 \texttt{marginnote} does not longer support \TeX{} engines
-% without primitives \cs{pdfsavepos}/\cs{savepos} and
-% \cs{pdflastxpos}/\cs{lastxpos}. The former (manual adjustment) fallback has
-% been removed. You'll get an error message, if you try to use a \TeX{} engine
-% without these primitives. Also $\varepsilon$-\TeX{} primitves are
-% needed. However, with current free \TeX{} distributions like MiK\TeX{} or
-% \TeX Live this shouldn't be a problem.
-%
-% At double side layout (e.g. using class option \texttt{twoside})
-% \cs{marginnote} needs to know the number of the current page to decide
-% whether the page is odd or even and so whether to use left or right
-% margin. \LaTeX{} uses an asynchronous output. Because of this counter
-% \texttt{page} should not be used to get the number of the current page
-% unless you are at page head or foot. To solve the problem
-% \textsf{marginnote} uses a mechanism similar to labels. But this means, that
-% the correct margin won't be known at this \LaTeX{} run but only at the
-% next. So after adding or deleting a margin note or after each change of page
-% break you need two \LaTeX{} runs to get all margins right.
-%
-% The command \cs{marginnote} uses \cs{strut} and \cs{vadjust} to put the
-% margin note at the correct position. But under some circumstances this may
-% fail. You may adjust the vertical position of the margin note using the
-% second optional argument of \cs{marginnote}. Sometimes even the text outside
-% \cs{marginnote} will be moved because of using \cs{marginnote}. You may use
-% one of the package options \texttt{fulladjust}, \texttt{heightadjust},
-% \texttt{depthajust} or \texttt{noajust} to change the global adjustment or
-% a local redefinition of |\mn@strut| or |\mn@zbox|.
-%
-% Note: The margin note will be placed at the current vertical line. This
-% means, if you are using two \cs{marginnote} commands at the same line, they
-% will be put on the same place. This is not a bug but a feature!
-%
-% Since release~1.1b \cs{marginnote} between paragraphs (in vertical mode)
-% will place the note between the paragaphs instead of the end of the previous
-% paragraph. You may use \cs{leavevmode} or the third optional argument of
-% \cs{marginnote} to place it different.
-%
-% No page break may occur inside a margin note created with \cs{marginnote}.
-%
-% \cs{marginnote} is somewhat different from \cs{marginpar} if used immediate
-% after \cs{item}. This is not a bug, it's a feature!
-%
-% With math \cs{marginnote} may work or may not depending on the math
-% environment.
-%
-% If you are using \XeTeX{}, PDF\LaTeX{} since version~1.40 or PDF\LaTeX{}
-% before version~1.40 with PDF output and the horizontal position of
-% a margin note is wrong, do one more PDF\LaTeX{} run.
-%
-% Sometimes lines are stretched vertically using \cs{marginnote}, e.g.\ if
-% you're using \cs{marginnote} at a list \emph{and} upper case umlauts like
-% ``\"U'' or if \verb|\lineskiplimit>0pt|. In this case
-% \verb|\lineskiplimit=0pt| or \verb|\lineskiplimit=-\maxdimen|, or one of the
-% options may help.
-%
-% You should not use \cs{marginnote} at the optional argument of \cs{item}.
-%
-% If \cs{if@twocolumn} is \cs{iftrue}, e.g., because you are using option
-% |twocolumn| or command |\twocolumn|, \cs{marginnote} does decide whether the
-% note should be placed left of the column or right of the columns simply by
-% comparing the current horizontal possition with
-% |\columnwidth+\columnsep|. So if the current horizontal possition is
-% somewhere in the left columns, the note is placed in the left margin. If the
-% current horizontal possition is somewhere right of the left column, the note
-% is placed in the right margin. However, support for twocolumn mode is as
-% problematic as support for reverse margin notes. I do not like it. Maybe it
-% will be changed in future. The current support for twocolumn mode has been
-% implemented only because of a feature request by Florent Chervet.
-%
+% Some known issues are listed below. For new issues, it is recommended to
+% either discuss them in a public \LaTeX{} forum or report them in
+% \hyperref{https://github.com/komascript/marginnote}{the project's} issue
+% tracker on github.
+% \begin{itemize}
+% \item Currently, the package lacks a new maintainer. The author no longer
+%   maintains the package anymore, as it was originally intended to be used as
+%   a small hack for for a few cases. But over the years it has grown and
+%   become a conglomerate of of hacks that hack hacks that are very widely
+%   used. A break with a complete overhaul of the design would be
+%   necessary. But nothing I can or want to do at the moment. If you want to
+%   do it, please \hyperref{email:komascript@gmx.info}{contact the
+%   author}. But even without taking over maintenance, you can contribute,
+%   e.g. by participating in the issue tracker of the package.
+% \item You cannot use paragraphs with \cs{par} or empty lines inside a margin
+%   note. In my opinion this would note make sense. However, if you really
+%   need paragraphs you can try using \cs{endgraf} instead of \cs{par}.
+% \item From version 1.4a, a workaround is available for double-sided
+%   documents with consecutive odd or even pages. However, it is not advisable
+%   to use double-sided documents with such page sequences as printing such
+%   documents can be problematic. The \textsf{marginnote} package displays a
+%   warning message whenever it detects those page sequences.
+% \item From version 1.3, the \texttt{marginnote} package no longer support
+%   \TeX{} engines that lack primitives \cs{pdfsavepos} and \cs{pdflastxpos},
+%   or \cs{savepos} and \cs{lastxpos}. The previous fallback option for manual
+%   adjustment has been removed. You will receive an error message if you try
+%   to use a \TeX{} engine without these primitives, and $\varepsilon$-\TeX{}
+%   primitves are also required. Nonetheless, this should not be an issue with
+%   current, free \TeX{} distributions like MiK\TeX{} or \TeX Live.
+% \item When using double-side layout, such as with using the \texttt{twoside}
+%   class option, \cs{marginnote} requires page number information to
+%   determine if a page is odd or even, and therefore wich margin to
+%   use\,---\,left or right. \LaTeX{} operates using asynchronous
+%   output. Because of this, the counter \texttt{page} should not be used to
+%   obtain the current page number, unless at the header or footer of the
+%   page. To resolve the issue, the \textsf{marginnote} package employs a
+%   mechanism akin to labels. However, this implies that the accurate margin
+%   will not be determined during this \LaTeX{} run, but in the
+%   next. Therefore, after making any changes to the margin notes or page
+%   breaks, two \LaTeX{} runs are necessary to ensure all margins are correct.
+% \item The \cs{marginnote} command utilizes \cs{strut} and \cs{vadjust} to
+%   position the margin note accurately. However, it may fail under certain
+%   circumstances. You may adjust the vertical position of the margin note
+%   using the second optional argument of \cs{marginnote}. Sometimes, the use
+%   of \cs{marginnote} command can cause the text outside to shift
+%   unnecessarily.  You can choose from the package options
+%   \texttt{fulladjust}, \texttt{heightadjust}, \texttt{depthajust}, or
+%   \texttt{noajust} to globally adjust, or locally redefine |\mn@strut| or
+%   |\mn@zbox|.
+% 
+%   Note: The margin note always will be placed at the current vertical
+%   line. This means, if you are using two \cs{marginnote} commands at the
+%   same line, they will be put on the same place. This is not a bug but a
+%   feature!
+% \item From version~1.1b, \cs{marginnote} commands inserted between
+%   paragraphs (or in \TeX terms: \emph{in vertical mode}) will result in the
+%   note being placed between the paragraphs instead of at the end of the
+%   preceding paragraph. You may use \cs{leavevmode} or the third optional
+%   argument of \cs{marginnote} to place it differently.
+% \item No page break can occur within a margin note created using the
+%   \cs{marginnote} command.
+% \item The use of \cs{marginnote} immediately after \cs{item} results in a
+%   different behavior compared to \cs{marginpar}. This is not a bug, but
+%   rather a deliberate feature!
+% \item With math, using the \cs{marginnote} command may work or not work,
+%   depending on the math environment.
+% \item If the horizontal position of the margin note is not correct, try
+%   another \LaTeX{} run.
+% \item Sometimes lines may stretch vertically when using \cs{marginnote},
+%   particularly if you use \cs{marginnote} within a list \emph{and} upper
+%   case umlauts like ``\"U'', or if you have \verb|\lineskiplimit>0pt|. To
+%   resolve this issue, you can set \verb|\lineskiplimit=0pt| or
+%   \verb|\lineskiplimit=-\maxdimen| or use other available package options.
+% \item You should not use \cs{marginnote} within the optional argument of
+%   \cs{item}.
+% \item If \cs{if@twocolumn} is \cs{iftrue}, e.g., because you are using the
+%   |twocolumn| class option or the |\twocolumn| command, \cs{marginnote}
+%   decides whether the note should be placed to the left or right the columns
+%   by comparing the current horizontal position with
+%   |\columnwidth+\columnsep|. If the current horizontal position is somewhere
+%   on the left column, the note is placed in the left margin. If the current
+%   horizontal position is somewhere right of the left column and therefore on
+%   the right column, the note is placed in the right margin. However,
+%   supporting twocolumn mode is as problematic as supporting reverse margin
+%   notes. It is not preferred. It may be revised in the future. The current
+%   support for twocolumn mode has only been implemented due to a feature
+%   request from Florent Chervet.
+% \end{itemize}
+% 
 % \StopEventually{\PrintIndex\PrintChanges}
 %
 % \section{Implementation}
@@ -339,9 +317,9 @@
 %<*package>
 % \fi
 %
-% \changes{v1.3}{2018/04/13}{$\varepsilon$-\TeX{} removed}^^A
+% \changes{v1.3}{2018/04/13}{$\varepsilon$-\TeX{} removed}
+% \changes{v1.3}{2018/04/13}{early \cs{pdfsavepos}/\cs{savepos} test}
 %
-% \changes{v1.3}{2018/04/13}{early \cs{pdfsavepos}/\cs{savepos} test}^^A
 % \begin{macro}{\mn@savepos}
 % \changes{v1.3}{2018/04/13}{new internal command}
 % \begin{macro}{\mn@lastxpos}
@@ -1046,9 +1024,7 @@
 %
 % end of `marginnote.dtx'
 %
-% \iffalse
-%%% Local Variables:
-%%% mode: doc-tex
-%%% TeX-master: t
-%%% End:
-% \fi
+% Local Variables:
+% mode: doc-tex
+% TeX-master: t
+% End:
