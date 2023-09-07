@@ -3,11 +3,18 @@ An experimental LaTeX package to add notes in the margin, even where `\marginpar
 
 ---
 
-LaTeX package `marginnote`  
-Copyright (c) 2005—2023 Markus Kohm  
-Release: 2018/08/09 v1.4b  
-Licence: LPPL 1.3c (see LICENSE.md)  
-CTAN Location: https://www.ctan.org/pkg/marginnote  
+LaTeX package `marginnote`
+
+Copyright (c) 2005—2023 Markus Kohm
+
+Documentation-Release: 2023/09/07 v1.4c
+
+Package-Release: 2018/08/09 v1.4b
+
+Licence: LPPL 1.3c (see LICENSE.md)
+
+CTAN Location: https://www.ctan.org/pkg/marginnote
+
 LPPL Maintainance Status: unmaintained
 
 ---
@@ -37,8 +44,11 @@ A new maintainer and new developers would be welcome!
 
 ## Release History
 
+### v1.4c:
+* Correction of documentation.
+
 ### v1.4b:
-* Fix for vertical position of margin notes, e.g., inside lists.  
+* Fix for vertical position of margin notes, e.g., inside lists.
 * I do not longer maintain the package. If you want to become the new maintainer, see the title page or the issue section in the manual.
 
 ### v1.4a:
