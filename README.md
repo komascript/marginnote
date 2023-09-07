@@ -39,7 +39,7 @@ A new maintainer and new developers would be welcome!
 
 ### v1.4b:
 * Fix for vertical position of margin notes, e.g., inside lists.  
-  I do not longer maintain the package. If you want to become the new maintainer, see the title page or the issue section in the manual.
+* I do not longer maintain the package. If you want to become the new maintainer, see the title page or the issue section in the manual.
 
 ### v1.4a:
 * Fix for consecutive odd pages or consecutive even pages in a double-ended document (e.g. with class option twoside) added. Note, however, using consecutive odd pages or consecutive even pages in a double-ended document is still not recommended, because printing with correct margins will still need at least an empty page between two odd or two even pages, because (La)TeX decides on the page counter, e.g., whether to use `\oddsidemargin` or `\evensidemargin` or whether to use `\@oddhead` and `\@oddfoot` or `\@evenhead` and `\@evenfoot`.
