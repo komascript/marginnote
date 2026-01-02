@@ -2,7 +2,7 @@
 
 --[[
   Build script for marginnote project
-  Copyright (c) 2021–2023 Markus Kohm
+  Copyright (c) 2021–2026 Markus Kohm
 
   This file is part of the build system of marginnote.
 
@@ -14,7 +14,7 @@
     https://www.latex-project.org/lppl.txt
 ]]
 
-release_info = "2023-09-07 v1.4c"
+release_info = "2026-01-02 v1.4d"
 
 -- Bundle and modules
 

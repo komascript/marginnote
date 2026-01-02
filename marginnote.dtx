@@ -1,7 +1,7 @@
 %\iffalse meta-comment
 % ======================================================================
 % marginnote.dtx
-% Copyright (c) Markus Kohm, 2005-2023
+% Copyright (c) Markus Kohm, 2005-2026
 %
 % This file is part of the work marginnote.
 %
@@ -31,12 +31,16 @@
 %
 %<*dtx>
 \ifx\ProvidesFile\undefined\def\ProvidesFile#1[#2]{}\fi
-\ProvidesFile{marginnote.dtx}[2023/09/07 1.4c
+\ProvidesFile{marginnote.dtx}[%
 %</dtx>
 %<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01]
-%<package>\ProvidesPackage{marginnote}[2018/08/09 1.4b
+%<package>\ProvidesPackage{marginnote}[%
 %<*package|dtx>
-  non floating margin notes for LaTeX]
+  2026/01/02 1.4d non floating margin notes for LaTeX
+%<*dtx>
+  (source + documentation)
+%</dtx>
+]
 %</package|dtx>
 %<*dtx>
 \ifx\documentclass\undefined
@@ -298,15 +302,15 @@
 % \item If \cs{if@twocolumn} is \cs{iftrue}, e.g., because you are using the
 %   |twocolumn| class option or the |\twocolumn| command, \cs{marginnote}
 %   decides whether the note should be placed to the left or right the columns
-%   by comparing the current horizontal position with
-%   |\columnwidth+\columnsep|. If the current horizontal position is somewhere
-%   on the left column, the note is placed in the left margin. If the current
-%   horizontal position is somewhere right of the left column and therefore on
-%   the right column, the note is placed in the right margin. However,
-%   supporting twocolumn mode is as problematic as supporting reverse margin
-%   notes. It is not preferred. It may be revised in the future. The current
-%   support for twocolumn mode has only been implemented due to a feature
-%   request from Florent Chervet.
+%   by comparing the current horizontal position with \emph{left
+%   margin}|+\columnwidth+.5\columnsep|. If the current horizontal position is
+%   somewhere on the left column, the note is placed in the left margin. If
+%   the current horizontal position is somewhere right of the left column and
+%   therefore on the right column, the note is placed in the right
+%   margin. However, supporting twocolumn mode is as problematic as supporting
+%   reverse margin notes. It is not preferred. It may be revised in the
+%   future. The current support for twocolumn mode has only been implemented
+%   due to a feature request from Florent Chervet.
 % \end{itemize}
 % 
 % \StopEventually{\PrintIndex\PrintChanges}
@@ -709,6 +713,7 @@
 %    \end{macrocode}
 % \changes{v1.2b}{2017/04/22}{\textsf{bidi} code added}^^A
 % \changes{v1.3}{2018/04/13}{\texttt{twocolumn} test added}^^A
+% \changes{v1.4d}{2026/01/02}{column detection fixed}^^A
 % If you are using package \textsf{bidi} and RTL mode is active, the position
 % is from right instead of left. So we have to substract \cs{@mn@currxpos}
 % from \cs{pdfpagewidth} (or \cs{pagewidth} using Lua\TeX, but this cannot be,
@@ -734,14 +739,14 @@
         \@tempswatrue
         \if@twocolumn
           \ifdim \@mn@currxpos
-                 < \dimexpr\oddsidemargin+\columnwidth+\columnsep\relax
+                 < \dimexpr 1in+\oddsidemargin+\columnwidth+.5\columnsep\relax
             \@tempswafalse
           \fi
         \fi
       \else
         \@tempswafalse
         \if@twocolumn
-          \ifdim\@mn@currxpos>\dimexpr\evensidemargin+\columnwidth\relax
+          \ifdim\@mn@currxpos>\dimexpr 1in+\evensidemargin+.5\columnwidth\relax
             \@tempswatrue
           \fi
         \fi  
@@ -753,7 +758,7 @@
       \@tempswatrue
       \if@twocolumn
         \ifdim \@mn@currxpos
-               < \dimexpr\oddsidemargin+\columnwidth+\columnsep\relax
+               < \dimexpr 1in+\oddsidemargin+\columnwidth+.5\columnsep\relax
           \@tempswafalse
         \fi
       \fi

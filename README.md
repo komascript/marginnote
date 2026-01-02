@@ -44,6 +44,9 @@ A new maintainer and new developers would be welcome!
 
 ## Release History
 
+### v1.4d:
+* Correction of column detection calculation in two-column mode.
+
 ### v1.4c:
 * Correction of documentation.
 
