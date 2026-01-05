@@ -5,11 +5,9 @@ An experimental LaTeX package to add notes in the margin, even where `\marginpar
 
 LaTeX package `marginnote`
 
-Copyright (c) 2005—2023 Markus Kohm
+Copyright © 2005—2026 Markus Kohm
 
-Documentation-Release: 2023/09/07 v1.4c
-
-Package-Release: 2018/08/09 v1.4b
+Release: 2026-01-05 v1.4d
 
 Licence: LPPL 1.3c (see LICENSE.md)
 
@@ -18,6 +16,14 @@ CTAN Location: https://www.ctan.org/pkg/marginnote
 LPPL Maintainance Status: unmaintained
 
 ---
+
+The project is currently hosted and managed on
+[Codeberg](https://codeberg.org/komascript/marginnote). For safety reasons,
+the repository will continue to be mirrored in
+[GitHub](https://github.com/komascript/marginnote) for some time. However, [bug
+reports](https://codeberg.org/komascript/marginnote/issues) and [pull
+requests](https://codeberg.org/komascript/marginnote/pulls) will only be
+acknowleged on Codeberg.
 
 ## Summary
 
@@ -36,16 +42,18 @@ using either MiKTeX upates or the TeX Live manager.
 
 ---
 
-## Maintenance and Development
+## Maintenance, Development, Support
 
-A new maintainer and new developers would be welcome!
+A new maintainer and new developers would be welcome! Until a new maintainer
+is found, all support will be shifted to the community. The author will only
+create new releases based on qualified pull requests.
 
 ---
 
 ## Release History
 
 ### v1.4d:
-* Correction of column detection calculation in two-column mode.
+* Correction of column detection calculation in two-column mode (by cabohah).
 
 ### v1.4c:
 * Correction of documentation.

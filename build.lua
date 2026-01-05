@@ -14,7 +14,7 @@
     https://www.latex-project.org/lppl.txt
 ]]
 
-release_info = "2026-01-02 v1.4d"
+release_info = "2026-01-05 v1.4d"
 
 -- Bundle and modules
 
@@ -40,9 +40,9 @@ uploadconfig = {
   summary     = "Notes in the margin, even where \\marginpar fails",
   topic       = "notes",
   ctanPath    = "/macros/latex/contrib/marginnote",
-  bugtracker  = "https://github.com/komascript/marginnote/issues",
-  home        = "https://github.com/komascript/marginnote",
-  repository  = "https://github.com/komascript/marginnote.git",
+  bugtracker  = "https://codeberg.org/komascript/marginnote/issues",
+  home        = "https://codeberg.org/komascript/marginnote",
+  repository  = "https://codeberg.org/komascript/marginnote.git",
   note        = "From version 1.4b the package is unmaintained."
 }
 
@@ -51,5 +51,33 @@ uploadconfig = {
 typesetruns  = 5
 
 -- Tagging
--- NOTE: Tagging is currently not supported, because there are different
---       versions for the manual and the package.
+-- Example: `l3build tag --date 2026-01-02 v1.4d'
+
+tagfiles = {module..".dtx","README.md","build.lua"}
+
+function update_tag (file,content,tagname,tagdate)
+   tagname = string.gsub (tagname, "v(%d+%.%d+%l?)", "%1")
+   tagyear = string.sub (tagdate, 1, 4)
+   -- fix the copyright year
+   content = string.gsub (content,
+                          "(©%s*%d%d%d%d)—%d%d%d%d",
+                          "%1—" .. tagyear)
+   content = string.gsub (content,
+                          "(©%s*%d%d%d%d)%s+",
+                          "%1–" .. tagyear .. " ")
+   content = string.gsub (content, tagyear .. "–" .. tagyear, tagyear)
+   if string.match (file, "%.dtx$") then
+      return string.gsub (content,
+                          "%[%d%d%d%d/%d%d/%d%d%s+v[%d%.]*%d+%l?",
+                          "[" .. tagdate .. " v" .. tagname)
+   elseif string.match (file, "%.md$") then
+      return string.gsub (content,
+                          "\nRelease: %d%d%d%d%-%d%d%-%d%d%s+v[%d%.]*%d+%l?",
+                          "\nRelease: " .. tagdate .. " v" .. tagname )
+   elseif string.match (file, "%.lua$") then
+      return string.gsub (content,
+                          '\nrelease_info%s*=%s*"%d%d%d%d%-%d%d%-%d%d%s*v[%d%.]*%d+%l?"',
+                          '\nrelease_info = "' .. tagdate .. " v" .. tagname .. '"' )
+   end
+   return content
+end
