@@ -567,9 +567,10 @@
   \g@addto@macro\@outputpage{%
     \stepcounter{mn@abspage}%
 %    \end{macrocode}
-% \changes{v1.4a}{2018/07/21}{workaround for screwball page order}^^A
-% From version 1.4a there is a workaround for consecutive odd pages or
-% consecutive even pages in a twoside document.
+%   \changes{v1.4a}{2018/07/21}{workaround for screwball page order}^^A
+%   \changes{v1.4d}{2026/01/05}{info only in verbose mode}^^A
+%   From version 1.4a there is a workaround for consecutive odd pages or
+%   consecutive even pages in a twoside document.
 %    \begin{macrocode}
     \ifodd\value{mn@abspage}%
       \ifodd\value{page}%
@@ -592,7 +593,9 @@
             }%
           \endgroup
         \fi
-        \PackageInfo{marginnote}{Using workaround for absolute page number}%
+        \if@mn@verbose
+          \PackageInfo{marginnote}{Using workaround for absolute page number}%
+        \fi
         \stepcounter{mn@abspage}%
       \fi
     \else
@@ -615,7 +618,9 @@
             }%
           \endgroup
         \fi
-        \PackageInfo{marginnote}{Using workaround for absolute page number}%
+        \if@mn@verbose
+          \PackageInfo{marginnote}{Using workaround for absolute page number}%
+        \fi
         \stepcounter{mn@abspage}%
       \fi
     \fi   
@@ -714,6 +719,7 @@
 % \changes{v1.2b}{2017/04/22}{\textsf{bidi} code added}^^A
 % \changes{v1.3}{2018/04/13}{\texttt{twocolumn} test added}^^A
 % \changes{v1.4d}{2026/01/02}{column detection fixed by cabohah}^^A
+% \changes{v1.4d}{2026/01/05}{info only in verbose mode}^^A
 % If you are using package \textsf{bidi} and RTL mode is active, the position
 % is from right instead of left. So we have to substract \cs{@mn@currxpos}
 % from \cs{pdfpagewidth} (or \cs{pagewidth} using Lua\TeX, but this cannot be,
@@ -721,8 +727,10 @@
 %    \begin{macrocode}
       \ifdefined\mn@pagewidth
         \@mn@if@RTL{%
-          \PackageInfo{marginnote}{Margin note
-            \@mn@thispage.\@mn@atthispage\space in RTL mode}%
+          \if@mn@verbose
+            \PackageInfo{marginnote}{Margin note
+              \@mn@thispage.\@mn@atthispage\space in RTL mode}%
+          \fi
           \edef\@mn@currxpos{%
             \the\dimexpr\mn@pagewidth-\@mn@currxpos\relax
           }%
