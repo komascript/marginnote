@@ -36,7 +36,7 @@
 %<package>\NeedsTeXFormat{LaTeX2e}[1995/12/01]
 %<package>\ProvidesPackage{marginnote}[%
 %<*package|dtx>
-  2026/01/02 1.4d non floating margin notes for LaTeX
+  2026/06/13 1.4e non floating margin notes for LaTeX
 %<*dtx>
   (source + documentation)
 %</dtx>
@@ -126,7 +126,7 @@
 % \changes{v1.0b}{2006/14/03}{spelling fixes}
 % \changes{v1.2b}{2017/10/14}{spelling fixes (by Thomas Reuben)}
 % \changes{v1.4c}{2023/09/07}{some documentation corrections only}
-%
+% \changes{v1.4e}{2026/06/13}{added tagging support}
 % \section{How to Use \textsf{marginnote} Package}
 %
 % First of all you have to load the package. You can use:
@@ -415,6 +415,7 @@
 %    \end{macrocode}
 % \begin{macro}{\mn@zbox}
 %   \changes{v1.1b}{2009/02/16}{new (internal)}
+%   \changes{v1.4e}{2026-06-13}{Avoid execution of para hooks.}
 % This macro is used to set a horizontal box without height, depth and width.
 %    \begin{macrocode}
 \newcommand{\mn@zbox}[1]{}
@@ -425,7 +426,10 @@
   \renewcommand*{\mn@strut}{\strut}%
   \renewcommand{\mn@zbox}[1]{%
     \bgroup
-      \setbox\@tempboxa\vbox{#1}%
+%    \end{macrocode}
+% Avoid the execution of the para/end hooks here (e.g. wrong for tagging):
+%    \begin{macrocode}
+      \setbox\@tempboxa\vbox{#1\RawParEnd}%
       \ht\@tempboxa\ht\strutbox
       \dp\@tempboxa\dp\strutbox
       \wd\@tempboxa\z@
@@ -437,7 +441,10 @@
   \renewcommand*{\mn@strut}{\begingroup\dp\strutbox\z@\strut\endgroup}%
   \renewcommand{\mn@zbox}[1]{%
     \bgroup
-      \setbox\@tempboxa\vbox{#1}%
+%    \end{macrocode}
+% Avoid the execution of the para/end hooks here, this is wrong for tagging:
+%    \begin{macrocode}    
+      \setbox\@tempboxa\vbox{#1\RawParEnd}%
       \ht\@tempboxa\ht\strutbox
       \dp\@tempboxa\dp\z@
       \wd\@tempboxa\z@
@@ -449,7 +456,10 @@
   \renewcommand*{\mn@strut}{\begingroup\ht\strutbox\z@\strut\endgroup}%
   \renewcommand{\mn@zbox}[1]{%
     \bgroup
-      \setbox\@tempboxa\vbox{#1}%
+%    \end{macrocode}
+% Avoid the execution of the para/end hooks here, this is wrong for tagging:
+%    \begin{macrocode}    
+      \setbox\@tempboxa\vbox{#1\RawParEnd}%
       \ht\@tempboxa\ht\z@
       \dp\@tempboxa\dp\strutbox
       \wd\@tempboxa\z@
@@ -461,7 +471,10 @@
   \renewcommand*{\mn@strut}{\relax}%
   \renewcommand{\mn@zbox}[1]{%
     \bgroup
-      \setbox\@tempboxa\vbox{\kern-\ht\strutbox #1}%
+%    \end{macrocode}
+% Avoid the execution of the para/end hooks here, this is wrong for tagging:
+%    \begin{macrocode}        
+      \setbox\@tempboxa\vbox{\kern-\ht\strutbox #1\RawParEnd}%
       \ht\@tempboxa\ht\z@
       \dp\@tempboxa\dp\z@
       \wd\@tempboxa\z@
@@ -477,19 +490,28 @@
 %   \texttt{noparboxrestore}}^^A
 % \begin{macro}{\mn@parboxrestore}
 % \changes{v1.4}{2018/07/01}{new internal command}^^A
-% We can either use \cs{@parboxrestore} inside the margin notes or dont use
+% We can either use \cs{@parboxrestore} inside the margin notes or don't use
 % it. I would recommend to use it, so this will be the new default.
+% \changes{v1.4e}{2026-06-13}{Added tagging socket.}
 %    \begin{macrocode}
 \newcommand*{\mn@parboxrestore}{}
 \DeclareOption{parboxrestore}{%
   \renewcommand*{\mn@parboxrestore}{%
+%    \end{macrocode}
+% Add tagging support (perhaps not really needed but safer):
+%    \begin{macrocode}
+    \UseTaggingSocket{para/restore}%
     \@tempskipa\parskip
     \@parboxrestore
     \parskip\@tempskipa
   }%
 }
 \DeclareOption{noparboxrestore}{%
-  \renewcommand*{\mn@parboxrestore}{}%
+  \renewcommand*{\mn@parboxrestore}%
+%    \end{macrocode}
+% Tagging should better restore:
+%    \begin{macrocode}
+    {\UseTaggingSocket{para/restore}}%
 }
 %    \end{macrocode}
 % \end{macro}
@@ -804,6 +826,7 @@
 % \changes{v1.1g}{2011/04/11}{missing \cs{long} added}
 % Command \cs{marginnote} is the main macro of the package. The others are
 % helpers to manage the optional arguments.
+% \changes{v1.4e}{2026-06-13}{Added tagging sockets.}
 %    \begin{macrocode}
 \newcommand*{\marginnote}{%
   \@dblarg\@mn@marginnote
@@ -824,6 +847,10 @@
 \long\def\@mn@@marginnote[#1]#2[#3]{%
   \endgroup
 %    \end{macrocode}
+% Tagging support:
+%    \begin{macrocode}
+\UseTaggingSocket{marginpar/begin}%
+%    \end{macrocode}
 % In horizontal mode the space hack of the \LaTeX{} kernel will be used. In
 % vertical mode this should not be used.
 %    \begin{macrocode}
@@ -833,6 +860,10 @@
   \else
     \@mn@@@marginnote[{#1}]{#2}[{#3}]%
   \fi
+%    \end{macrocode}
+% Tagging support:
+%    \begin{macrocode}
+  \UseTaggingSocket{marginpar/end}%  
 }
 \newcommand{\@mn@@@marginnote}{}
 \long\def\@mn@@@marginnote[#1]#2[#3]{%
@@ -1004,11 +1035,16 @@
 %
 % \begin{macro}{\mn@vadjust}
 % \changes{v1.1b}{2009/02/16}{new (internal)}
+% \changes{v1.4e}{2026-06-13}{Avoid execution of para hooks.}
 % This macro is used to set a vertical box at horizontal mode.
 %    \begin{macrocode}
 \newcommand{\mn@vadjust}[1]{%
   \mn@zbox{\kern-\parskip
-    \leavevmode\vadjust{#1}%
+%    \end{macrocode}
+% Avoid the execution of the para hooks here (wrong e.g. with tagging): 
+%    \begin{macrocode}
+    \RawIndent
+    \vadjust{#1}%
     \kern\parskip
   }%
 }
