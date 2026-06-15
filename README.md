@@ -7,7 +7,7 @@ LaTeX package `marginnote`
 
 Copyright © 2005—2026 Markus Kohm
 
-Release: 2026-01-05 v1.4d
+Release: 2026-06-15 v1.5
 
 Licence: LPPL 1.3c (see LICENSE.md)
 
@@ -51,6 +51,11 @@ create new releases based on qualified pull requests.
 ---
 
 ## Release History
+
+### v1.5:
+* Tagging support by Ulrike Fischer.
+* Needs at least LaTeX 2025-06-01.
+* Switch to version numbers without letters.
 
 ### v1.4d:
 * Correction of column detection calculation in two-column mode (by cabohah).

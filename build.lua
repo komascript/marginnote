@@ -14,7 +14,7 @@
     https://www.latex-project.org/lppl.txt
 ]]
 
-release_info = "2026-01-05 v1.4d"
+release_info = "2026-06-15 v1.5"
 
 -- Bundle and modules
 
@@ -68,11 +68,11 @@ function update_tag (file,content,tagname,tagdate)
    content = string.gsub (content, tagyear .. "–" .. tagyear, tagyear)
    if string.match (file, "%.dtx$") then
       return string.gsub (content,
-                          "%[%d%d%d%d/%d%d/%d%d%s+v[%d%.]*%d+%l?",
-                          "[" .. tagdate .. " v" .. tagname)
+                          "%d%d%d%d%-%d%d%-%d%d%s+v[%d%.]*%d+%l*",
+                          tagdate .. " v" .. tagname )
    elseif string.match (file, "%.md$") then
       return string.gsub (content,
-                          "\nRelease: %d%d%d%d%-%d%d%-%d%d%s+v[%d%.]*%d+%l?",
+                          "\nRelease: %d%d%d%d%-%d%d%-%d%d%s+v[%d%.]*%d+%l*",
                           "\nRelease: " .. tagdate .. " v" .. tagname )
    elseif string.match (file, "%.lua$") then
       return string.gsub (content,
